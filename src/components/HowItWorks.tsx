@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { MessageSquare, Brain, Zap, ArrowRight } from 'lucide-react'
 import '../styles/HowItWorks.css'
+import ComingSoonModal from './ComingSoonModal'
 
 interface Step {
   step: string
