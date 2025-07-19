@@ -99,7 +99,7 @@ const Hero: React.FC = () => {
   const [currentPhase, setCurrentPhase] = useState<number>(0)
   const [visibleNodes, setVisibleNodes] = useState<TreeNode[]>([])
   const [visibleLinks, setVisibleLinks] = useState<TreeLink[]>([])
-  const [viewBox, setViewBox] = useState<string>('0 0 650 450') // Better spacing for full container
+  const [viewBox] = useState<string>('0 0 650 450') // Better spacing for full container
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
@@ -125,8 +125,8 @@ const Hero: React.FC = () => {
     if (!phase) return
 
     const startTime = Date.now()
-    let prevNodes = new Set(visibleNodes.map(n => n.id))
-    let prevLinks = new Set(visibleLinks.map(l => l.id))
+    const prevNodes = new Set(visibleNodes.map(n => n.id))
+    const prevLinks = new Set(visibleLinks.map(l => l.id))
 
     const animate = () => {
       const elapsed = Date.now() - startTime

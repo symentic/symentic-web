@@ -2,11 +2,8 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { 
   MessageCircle, 
-  Mail, 
-  FileText, 
   Users, 
   Calendar, 
-  BarChart3,
   ArrowUpRight 
 } from 'lucide-react'
 import '../styles/UseCases.css'
