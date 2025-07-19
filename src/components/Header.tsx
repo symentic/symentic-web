@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menu } from 'lucide-react'
 import '../styles/Header.css'
+import symenticLogo from '../assets/symentic.png'
 
 const Header: React.FC = () => {
   return (
@@ -8,7 +9,7 @@ const Header: React.FC = () => {
       <div className="header-container">
         <div className="header-logo">
           <img 
-            src="/src/assets/symentic.png"
+            src={symenticLogo}
             alt="Symentic Logo" 
             className="header-logo-image"
           />
