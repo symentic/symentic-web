@@ -12,6 +12,7 @@ interface Step {
 }
 
 const HowItWorks: React.FC = () => {
+  const [showComingSoon, setShowComingSoon] = useState<boolean>(false)
   const steps: Step[] = [
     {
       step: '01',
@@ -227,6 +228,7 @@ const HowItWorks: React.FC = () => {
         >
           <p className="how-it-works-cta-text">Ready to see it in action?</p>
           <motion.button 
+            onClick={() => setShowComingSoon(true)}
             className="how-it-works-cta-button"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -236,6 +238,11 @@ const HowItWorks: React.FC = () => {
           </motion.button>
         </motion.div>
       </div>
+
+      <ComingSoonModal 
+        isOpen={showComingSoon} 
+        onClose={() => setShowComingSoon(false)} 
+      />
     </section>
   )
 }

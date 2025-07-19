@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Mail, Check, Sparkles } from 'lucide-react'
+import { ArrowRight, Mail, Sparkles } from 'lucide-react'
 import '../styles/CTA.css'
 import ComingSoonModal from './ComingSoonModal'
 
@@ -11,8 +11,6 @@ interface Stat {
 
 const CTA: React.FC = () => {
   const [email, setEmail] = useState<string>('')
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showComingSoon, setShowComingSoon] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -86,33 +84,19 @@ const CTA: React.FC = () => {
                 placeholder="Enter your email"
                 className="cta-input"
                 required
-                disabled={isLoading || isSubmitted}
+                disabled={false}
               />
             </div>
             
             <motion.button
               type="submit"
-              disabled={isLoading || isSubmitted}
+              disabled={false}
               className="cta-submit-button"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {isSubmitted ? (
-                <>
-                  <Check className="cta-submit-icon" />
-                  <span>Added to Waitlist!</span>
-                </>
-              ) : isLoading ? (
-                <>
-                  <div className="cta-submit-spinner"></div>
-                  <span>Joining...</span>
-                </>
-              ) : (
-                <>
-                  <span>Join Waitlist</span>
-                  <ArrowRight className="cta-submit-icon" />
-                </>
-              )}
+              <span>Join Waitlist</span>
+              <ArrowRight className="cta-submit-icon" />
             </motion.button>
           </form>
 
