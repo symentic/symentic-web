@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Zap } from 'lucide-react'
 import '../styles/Hero.css'
+import ComingSoonModal from './ComingSoonModal'
 
 interface TreeNode {
   id: string
@@ -103,6 +104,7 @@ const Hero: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
+  const [showComingSoon, setShowComingSoon] = useState(false)
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const animationRef = useRef<number | undefined>(undefined)
   const svgRef = useRef<SVGSVGElement>(null)
@@ -329,12 +331,18 @@ const Hero: React.FC = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="hero-buttons"
             >
-              <button className="hero-button-primary">
+              <button 
+                onClick={() => setShowComingSoon(true)}
+                className="hero-button-primary"
+              >
                 <span>Join Waitlist</span>
                 <ArrowRight className="hero-button-primary-icon" />
               </button>
               
-              <button className="hero-button-secondary">
+              <button 
+                onClick={() => setShowComingSoon(true)}
+                className="hero-button-secondary"
+              >
                 View Docs
               </button>
             </motion.div>
@@ -510,6 +518,11 @@ const Hero: React.FC = () => {
           </motion.div>
         </div>
       </div>
+
+      <ComingSoonModal 
+        isOpen={showComingSoon} 
+        onClose={() => setShowComingSoon(false)} 
+      />
     </section>
   )
 }

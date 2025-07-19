@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Copy, Check, Code, Zap, Database, Bot } from 'lucide-react'
 import '../styles/DeveloperAPI.css'
+import ComingSoonModal from './ComingSoonModal'
 
 interface ApiExample {
   title: string
@@ -23,6 +24,7 @@ type TabKey = 'messages' | 'createBot' | 'memory'
 const DeveloperAPI: React.FC = () => {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<TabKey>('messages')
+  const [showComingSoon, setShowComingSoon] = useState<boolean>(false)
 
   const handleCopy = (code: string, tabName: string): void => {
     navigator.clipboard.writeText(code)
@@ -367,6 +369,7 @@ const DeveloperAPI: React.FC = () => {
                 ))}
               </div>
               <motion.button 
+                onClick={() => setShowComingSoon(true)}
                 className="developer-api-quickstart-button"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -377,6 +380,11 @@ const DeveloperAPI: React.FC = () => {
           </motion.div>
         </div>
       </div>
+
+      <ComingSoonModal 
+        isOpen={showComingSoon} 
+        onClose={() => setShowComingSoon(false)} 
+      />
     </section>
   )
 }

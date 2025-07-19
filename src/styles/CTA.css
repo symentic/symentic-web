@@ -419,6 +419,14 @@
   transform: scale(1.05);
 }
 
+.cta-footer-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
 .cta-footer-copyright {
   color: var(--color-slate-500);
   text-align: center;

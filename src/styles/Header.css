@@ -66,6 +66,20 @@
   color: #F1F5F9;
 }
 
+/* Navigation button styles for React Router */
+.header-nav-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.header-logo {
+  text-decoration: none;
+  color: inherit;
+}
+
 .header-actions {
   display: flex;
   align-items: center;

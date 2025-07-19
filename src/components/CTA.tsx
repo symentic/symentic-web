@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Mail, Check, Sparkles } from 'lucide-react'
 import '../styles/CTA.css'
+import ComingSoonModal from './ComingSoonModal'
 
 interface Stat {
   number: string
@@ -12,30 +13,20 @@ const CTA: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [showComingSoon, setShowComingSoon] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!email) return
 
-    setIsLoading(true)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setIsLoading(false)
-    setIsSubmitted(true)
-    setEmail('')
-
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false)
-    }, 3000)
+    // Show coming soon modal instead of actual submission
+    setShowComingSoon(true)
   }
 
   const stats: Stat[] = [
-    { number: '10K+', label: 'Messages Analyzed' },
-    { number: '150+', label: 'Agents Deployed' },
-    { number: '50+', label: 'Companies Onboard' },
+    { number: '0+', label: 'Messages Analyzed' },
+    { number: '0+', label: 'Agents Deployed' },
+    { number: '0+', label: 'Companies Onboard' },
     { number: '99.9%', label: 'Uptime' }
   ]
 
@@ -167,34 +158,34 @@ const CTA: React.FC = () => {
           className="cta-footer"
         >
           <div className="cta-footer-links">
-            <motion.a 
-              href="#" 
-              className="cta-footer-link"
+            <motion.button 
+              onClick={() => setShowComingSoon(true)}
+              className="cta-footer-link cta-footer-button"
               whileHover={{ scale: 1.05 }}
             >
               Documentation
-            </motion.a>
-            <motion.a 
-              href="#" 
-              className="cta-footer-link"
+            </motion.button>
+            <motion.button 
+              onClick={() => setShowComingSoon(true)}
+              className="cta-footer-link cta-footer-button"
               whileHover={{ scale: 1.05 }}
             >
               Discord Community
-            </motion.a>
-            <motion.a 
-              href="#" 
-              className="cta-footer-link"
+            </motion.button>
+            <motion.button 
+              onClick={() => setShowComingSoon(true)}
+              className="cta-footer-link cta-footer-button"
               whileHover={{ scale: 1.05 }}
             >
               GitHub
-            </motion.a>
-            <motion.a 
-              href="#" 
-              className="cta-footer-link"
+            </motion.button>
+            <motion.button 
+              onClick={() => setShowComingSoon(true)}
+              className="cta-footer-link cta-footer-button"
               whileHover={{ scale: 1.05 }}
             >
               Blog
-            </motion.a>
+            </motion.button>
           </div>
           
           <div className="cta-footer-copyright">
@@ -236,6 +227,11 @@ const CTA: React.FC = () => {
           />
         </div>
       </div>
+
+      <ComingSoonModal 
+        isOpen={showComingSoon} 
+        onClose={() => setShowComingSoon(false)} 
+      />
     </section>
   )
 }
