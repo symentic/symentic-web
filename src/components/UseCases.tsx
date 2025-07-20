@@ -9,7 +9,7 @@ import {
 import '../styles/UseCases.css'
 
 interface UseCase {
-  icon: React.ComponentType<any>
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
   title: string
   description: string
   features: string[]

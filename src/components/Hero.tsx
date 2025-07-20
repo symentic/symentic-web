@@ -186,6 +186,7 @@ const Hero: React.FC = () => {
         cancelAnimationFrame(animationRef.current)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPhase])
 
   // Reset animation
