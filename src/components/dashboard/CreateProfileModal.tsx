@@ -12,10 +12,19 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
   onClose,
   onSuccess
 }) => {
+  const generateUserId = () => {
+    // Generate a unique user ID in Slack-like format
+    const prefix = 'U'
+    const timestamp = Date.now().toString(36).toUpperCase()
+    const random = Math.random().toString(36).substring(2, 5).toUpperCase()
+    return `${prefix}${timestamp}${random}`
+  }
+
   const [formData, setFormData] = useState<Partial<CreateEngramProfileInput>>({
     businessId,
     userType: 'internal',
-    tags: []
+    tags: [],
+    userId: generateUserId()
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -32,6 +41,15 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
       setIsLoading(true)
       setError(null)
       
+      // Check if profile already exists
+      const existingProfile = await EngramProfileService.getProfile(businessId, formData.userId!)
+      
+      if (existingProfile) {
+        setError(`A profile already exists for User ID: ${formData.userId}`)
+        setIsLoading(false)
+        return
+      }
+      
       await EngramProfileService.createProfile({
         ...formData,
         businessId,
@@ -43,9 +61,18 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
       
       onSuccess()
       onClose()
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error creating profile:', err)
-      setError('Failed to create profile. Please try again.')
+      
+      // Handle specific error cases
+      if (err.message?.includes('conditional request failed')) {
+        setError(`A profile already exists for User ID: ${formData.userId}`)
+      } else if (err.message?.includes('Profile not found')) {
+        // This is actually good - profile doesn't exist, but create failed for another reason
+        setError('Failed to create profile. Please check your input and try again.')
+      } else {
+        setError('Failed to create profile. Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -83,7 +110,17 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="userId">User ID *</label>
+            <label htmlFor="userId">
+              User ID *
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, userId: generateUserId() }))}
+                className="generate-id-btn"
+                title="Generate new ID"
+              >
+                ↻
+              </button>
+            </label>
             <input
               type="text"
               id="userId"
@@ -91,6 +128,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               onChange={e => setFormData(prev => ({ ...prev, userId: e.target.value }))}
               placeholder="e.g., U096L62NHB7"
               required
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
           
@@ -102,6 +143,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               value={formData.name || ''}
               onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
               required
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
           
@@ -113,6 +158,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               value={formData.email || ''}
               onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
               required
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
           
@@ -124,6 +173,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               value={formData.role || ''}
               onChange={e => setFormData(prev => ({ ...prev, role: e.target.value }))}
               placeholder="e.g., Team Member, Developer"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
           
@@ -135,6 +188,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
               rows={3}
               placeholder="Brief description of the user"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
           
@@ -158,6 +215,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               value={formData.source || ''}
               onChange={e => setFormData(prev => ({ ...prev, source: e.target.value }))}
               placeholder="e.g., slack, manual"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
           
@@ -168,6 +229,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
               id="tags"
               onKeyDown={handleTagInput}
               placeholder="Add tags..."
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
             <div className="tags-list">
               {formData.tags?.map((tag, index) => (
@@ -200,6 +265,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   slackUserId: e.target.value
                 }
               }))}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
             
             <label htmlFor="displayName">Display Name</label>
@@ -214,6 +283,10 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   displayName: e.target.value
                 }
               }))}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           </div>
           
