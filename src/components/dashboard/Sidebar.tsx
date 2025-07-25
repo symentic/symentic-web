@@ -1,5 +1,5 @@
 import React from 'react'
-import { Users, Filter, Home, Shield, Tag } from 'lucide-react'
+import { Users, Filter, Home, Shield} from 'lucide-react'
 import symenticLogo from '../../assets/symentic.png'
 
 interface SidebarProps {

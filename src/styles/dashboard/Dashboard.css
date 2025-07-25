@@ -361,6 +361,10 @@
   color: var(--color-cyan-300);
 }
 
+.tag-filter-chip:focus {
+  outline: none;
+}
+
 .clear-all-tags {
   padding: 0.375rem 0.875rem;
   background: transparent;
@@ -394,6 +398,10 @@
   color: var(--color-slate-600);
   border-color: var(--color-slate-800);
   background: transparent;
+}
+
+.clear-all-tags:focus {
+  outline: none;
 }
 
 /* Dashboard Content */
@@ -626,6 +634,10 @@
   background: rgba(148, 163, 184, 0.2);
   color: var(--color-slate-100);
   border-color: rgba(148, 163, 184, 0.3);
+}
+
+.tag:focus {
+  outline: none;
 }
 
 /* Profile Detail Modal */
