@@ -1,11 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any user authenticated via an API key can "create", "read",
-"update", and "delete" any "Todo" records.
-=========================================================================*/
 const schema = a.schema({
   Todo: a
     .model({
@@ -13,12 +7,76 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
   
+<<<<<<< HEAD
   Waitlist: a
     .model({
       email: a.string().required(),
       signedUpAt: a.datetime(),
       source: a.string(), // e.g. "homepage", "about-us", etc.
     })
+=======
+  EngramProfile: a
+    .model({
+      // Composite key fields
+      PK: a.string().required(), // BUSINESS#T096L62N0MB
+      SK: a.string().required(), // USER#U096L62NHB7
+      
+      // Business and User IDs
+      businessId: a.string().required(),
+      userId: a.string().required(),
+      
+      // Profile data
+      name: a.string().required(),
+      email: a.email().required(),
+      description: a.string(),
+      role: a.string(),
+      userType: a.enum(['internal', 'external']),
+      source: a.string(),
+      
+      // Arrays
+      tags: a.string().array(),
+      expertise: a.string().array(),
+      enrichments: a.json().array(),
+      
+      // Counters and timestamps
+      interactionCount: a.integer().default(0),
+      firstSeen: a.datetime(),
+      lastInteraction: a.datetime(),
+      lastUpdated: a.datetime(),
+      
+      // Consent object
+      consent: a.customType({
+        given: a.boolean(),
+        method: a.string(),
+        timestamp: a.datetime(),
+      }),
+      
+      // Slack profile
+      slackProfile: a.customType({
+        slackUserId: a.string(),
+        displayName: a.string(),
+        realName: a.string(),
+        title: a.string(),
+        statusText: a.string(),
+        timezone: a.string(),
+        profilePictureUrl: a.url(),
+        isAdmin: a.boolean(),
+        isOwner: a.boolean(),
+      }),
+      
+      // GSI fields
+      GSI1PK: a.string(), // BUSINESS#T096L62N0MB
+      GSI1SK: a.string(), // TYPE#internal#USER#U096L62NHB7
+      
+      // Additional fields
+      id: a.string(), // profile_T096L62N0MB_U096L62NHB7
+      customFields: a.json(),
+    })
+    .identifier(['PK', 'SK'])
+    .secondaryIndexes((index) => [
+      index('GSI1PK').sortKeys(['GSI1SK']).queryField('engramsByBusinessAndType'),
+    ])
+>>>>>>> e0b2c7a (d)
     .authorization((allow) => [allow.publicApiKey()]),
 });
 
