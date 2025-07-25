@@ -1,5 +1,6 @@
 import React from 'react'
 import { Users, Filter, Home, Shield, Tag } from 'lucide-react'
+import symenticLogo from '../../assets/symentic.png'
 
 interface SidebarProps {
   selectedFilter: string
@@ -15,7 +16,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   totalCount
 }) => {
   const filters = [
-    { id: 'all', label: 'All Engrams', icon: <Home size={18} /> },
+    { id: 'all', label: 'Engrams', icon: <Home size={18} /> },
     { id: 'internal', label: 'Internal', icon: <Shield size={18} /> },
     { id: 'external', label: 'External', icon: <Users size={18} /> },
   ]
@@ -23,8 +24,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div className="dashboard-sidebar">
       <div className="sidebar-header">
-        <h2>Symentic Console</h2>
-        <p className="sidebar-subtitle">Engram Management</p>
+        <div className="sidebar-logo">
+          <img src={symenticLogo} alt="Symentic" />
+          <h2>Symentic</h2>
+        </div>
+        <p className="sidebar-subtitle">Engram Management Console</p>
       </div>
 
       <div className="sidebar-stats">

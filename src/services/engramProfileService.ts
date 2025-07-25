@@ -107,13 +107,15 @@ export class EngramProfileService {
       })
 
       if (errors) {
-        throw new Error(`Failed to get profile: ${errors[0].message}`)
+        console.error('Error getting profile:', errors)
+        return null
       }
 
       return data
     } catch (error) {
       console.error('Error getting Engram profile:', error)
-      throw error
+      // Return null if profile not found instead of throwing
+      return null
     }
   }
 

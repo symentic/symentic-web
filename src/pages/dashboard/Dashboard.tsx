@@ -3,6 +3,7 @@ import type { Schema } from '../../../amplify/data/resource'
 import { EngramProfile } from '../../components/dashboard/EngramProfile'
 import { Sidebar } from '../../components/dashboard/Sidebar'
 import { SearchBar } from '../../components/dashboard/SearchBar'
+import { TagFilter } from '../../components/dashboard/TagFilter'
 import { ProfileGrid } from '../../components/dashboard/ProfileGrid'
 import { ProfileDetail } from '../../components/dashboard/ProfileDetail'
 import { CreateProfileModal } from '../../components/dashboard/CreateProfileModal'
@@ -17,6 +18,7 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('all')
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [showCreateModal, setShowCreateModal] = useState(false)
   
   // Business ID for demo purposes
@@ -28,7 +30,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     filterEngrams()
-  }, [searchQuery, selectedFilter, engrams])
+  }, [searchQuery, selectedFilter, selectedTags, engrams])
 
   const fetchEngrams = async () => {
     try {
@@ -46,6 +48,16 @@ const Dashboard: React.FC = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const getAllUniqueTags = () => {
+    const tagSet = new Set<string>()
+    engrams.forEach(engram => {
+      if (engram.tags) {
+        engram.tags.forEach(tag => tagSet.add(tag))
+      }
+    })
+    return Array.from(tagSet).sort()
   }
 
   const filterEngrams = () => {
@@ -68,6 +80,14 @@ const Dashboard: React.FC = () => {
       filtered = filtered.filter(engram => {
         const userType = engram.userType || ''
         return userType === selectedFilter
+      })
+    }
+
+    // Apply tag filter
+    if (selectedTags.length > 0) {
+      filtered = filtered.filter(engram => {
+        const engramTags = engram.tags || []
+        return selectedTags.some(tag => engramTags.includes(tag))
       })
     }
 
@@ -100,6 +120,12 @@ const Dashboard: React.FC = () => {
             </button>
           </div>
         </div>
+
+        <TagFilter
+          availableTags={getAllUniqueTags()}
+          selectedTags={selectedTags}
+          onTagsChange={setSelectedTags}
+        />
 
         <div className="dashboard-content">
           {isLoading ? (
