@@ -395,6 +395,15 @@
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
+  .hero-content {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .hero-badge {
+    align-self: center;
+  }
+  
   .hero-heading {
     text-align: center;
   }

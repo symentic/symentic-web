@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Zap } from 'lucide-react'
 import '../styles/Hero.css'
 import ComingSoonModal from './ComingSoonModal'
+import WaitlistModal from './WaitlistModal'
 
 interface TreeNode {
   id: string
@@ -105,6 +106,7 @@ const Hero: React.FC = () => {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [showComingSoon, setShowComingSoon] = useState(false)
+  const [showWaitlist, setShowWaitlist] = useState(false)
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const animationRef = useRef<number | undefined>(undefined)
   const svgRef = useRef<SVGSVGElement>(null)
@@ -333,7 +335,7 @@ const Hero: React.FC = () => {
               className="hero-buttons"
             >
               <button 
-                onClick={() => setShowComingSoon(true)}
+                onClick={() => setShowWaitlist(true)}
                 className="hero-button-primary"
               >
                 <span>Join Waitlist</span>
@@ -523,6 +525,12 @@ const Hero: React.FC = () => {
       <ComingSoonModal 
         isOpen={showComingSoon} 
         onClose={() => setShowComingSoon(false)} 
+      />
+
+      <WaitlistModal 
+        isOpen={showWaitlist} 
+        onClose={() => setShowWaitlist(false)} 
+        source="hero"
       />
     </section>
   )

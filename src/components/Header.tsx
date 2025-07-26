@@ -1,15 +1,22 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Menu } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import '../styles/Header.css'
 import symenticLogo from '../assets/symentic.png'
 import ComingSoonModal from './ComingSoonModal'
+import WaitlistModal from './WaitlistModal'
 
 const Header: React.FC = () => {
   const [showComingSoon, setShowComingSoon] = useState(false)
+  const [showWaitlist, setShowWaitlist] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleComingSoon = () => {
     setShowComingSoon(true)
+  }
+
+  const handleWaitlist = () => {
+    setShowWaitlist(true)
   }
 
   const handleSectionClick = (sectionId: string) => {
@@ -20,6 +27,12 @@ const Header: React.FC = () => {
       // If section doesn't exist, navigate to home page first
       window.location.href = `/#${sectionId}`
     }
+    // Close mobile menu after navigation
+    setIsMobileMenuOpen(false)
+  }
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
   }
 
   return (
@@ -35,7 +48,7 @@ const Header: React.FC = () => {
             <span className="header-logo-text">Symentic</span>
           </Link>
           
-          <nav className="header-nav">
+          <nav className={`header-nav ${isMobileMenuOpen ? 'header-nav-mobile-open' : ''}`}>
             <a 
               href="#how-it-works" 
               onClick={(e) => {
@@ -46,7 +59,7 @@ const Header: React.FC = () => {
             >
               How it Works
             </a>
-            <Link to="/about-us" className="header-nav-link">About Us</Link>
+            <Link to="/about-us" className="header-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
             <a 
               href="#developer-api" 
               onClick={(e) => {
@@ -65,7 +78,7 @@ const Header: React.FC = () => {
             </button>
           </nav>
           
-          <div className="header-actions">
+          <div className={`header-actions ${isMobileMenuOpen ? 'header-actions-mobile-open' : ''}`}>
             <button 
               onClick={handleComingSoon}
               className="header-button-secondary"
@@ -73,15 +86,15 @@ const Header: React.FC = () => {
               Sign In
             </button>
             <button 
-              onClick={handleComingSoon}
+              onClick={handleWaitlist}
               className="header-button-primary"
             >
               Join Waitlist
             </button>
           </div>
           
-          <button className="header-mobile-menu">
-            <Menu size={24} />
+          <button className="header-mobile-menu" onClick={toggleMobileMenu}>
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </header>
@@ -89,6 +102,12 @@ const Header: React.FC = () => {
       <ComingSoonModal 
         isOpen={showComingSoon} 
         onClose={() => setShowComingSoon(false)} 
+      />
+
+      <WaitlistModal 
+        isOpen={showWaitlist} 
+        onClose={() => setShowWaitlist(false)} 
+        source="header"
       />
     </>
   )
