@@ -2,6 +2,9 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Linkedin, Users, Brain, Code } from 'lucide-react'
 import '../styles/AboutUs.css'
+import leoHeadshot from '../assets/leoheadshot.jpeg'
+import willHeadshot from '../assets/willheadshot.jpeg'
+import richardHeadshot from '../assets/richardheadshot.jpg'
 
 interface Founder {
   name: string
@@ -9,6 +12,7 @@ interface Founder {
   linkedin: string
   bio: string
   expertise: string[]
+  profileImage?: string
 }
 
 const AboutUs: React.FC = () => {
@@ -18,14 +22,24 @@ const AboutUs: React.FC = () => {
       role: "Co-Founder & CEO",
       linkedin: "https://www.linkedin.com/in/leogao25/",
       bio: "Deep expertise in machine learning, distributed systems, and AI infrastructure at scale.",
-      expertise: ["Product Vision", "System Architecture", "AI Research"]
+      expertise: ["Product Vision", "System Architecture", "AI Research"],
+      profileImage: leoHeadshot
     },
     {
       name: "William Zhang",
       role: "Co-Founder & CTO",
       linkedin: "https://www.linkedin.com/in/williamzhang04/",
       bio: "Passionate about building the future of autonomous AI systems and symbiotic agent networks.",
-      expertise: ["AI Strategy", "Product Vision", "Team Leadership"]
+      expertise: ["AI Strategy", "Product Vision", "Team Leadership"],
+      profileImage: willHeadshot
+    },
+    {
+      name: "Richard Huang",
+      role: "Co-Founder & CPO",
+      linkedin: "https://www.linkedin.com/in/richxhuang/",
+      bio: "Focused on creating intuitive user experiences and driving product innovation in AI-powered platforms.",
+      expertise: ["Product Strategy", "User Experience", "Product Management"],
+      profileImage: richardHeadshot
     },
   ]
 
@@ -142,6 +156,15 @@ const AboutUs: React.FC = () => {
                 whileHover={{ y: -8 }}
               >
                 <div className="about-us-founder-content">
+                  {founder.profileImage && (
+                    <div className="about-us-founder-image-container">
+                      <img 
+                        src={founder.profileImage} 
+                        alt={`${founder.name} headshot`}
+                        className="about-us-founder-image"
+                      />
+                    </div>
+                  )}
                   <div className="about-us-founder-header">
                     <h4 className="about-us-founder-name">{founder.name}</h4>
                     <span className="about-us-founder-role">{founder.role}</span>
@@ -189,13 +212,17 @@ const AboutUs: React.FC = () => {
               If you're passionate about AI, autonomous systems, and building the future, 
               we'd love to hear from you.
             </p>
-            <motion.button 
-              className="about-us-contact-button"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Get in Touch
-            </motion.button>
+            <div className="about-us-contact-email-section">
+              <span className="about-us-contact-label">Get in touch at </span>
+              <motion.a
+                href="mailto:hi@symentic.dev"
+                className="about-us-contact-email-button"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                hi@symentic.dev
+              </motion.a>
+            </div>
           </div>
         </motion.div>
       </div>

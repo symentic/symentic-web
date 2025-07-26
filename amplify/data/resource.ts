@@ -12,6 +12,14 @@ const schema = a.schema({
       content: a.string(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
+  
+  Waitlist: a
+    .model({
+      email: a.string().required(),
+      signedUpAt: a.datetime(),
+      source: a.string(), // e.g. "homepage", "about-us", etc.
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Mail, Sparkles } from 'lucide-react'
+import { ArrowRight, Mail, Sparkles, CheckCircle, AlertCircle } from 'lucide-react'
+import { generateClient } from 'aws-amplify/data'
+import type { Schema } from '../../amplify/data/resource'
 import '../styles/CTA.css'
 import ComingSoonModal from './ComingSoonModal'
+
+const client = generateClient<Schema>()
 
 interface Stat {
   number: string
@@ -12,13 +16,40 @@ interface Stat {
 const CTA: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [showComingSoon, setShowComingSoon] = useState<boolean>(false)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!email) return
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!email || !emailRegex.test(email) || isSubmitting) return
 
-    // Show coming soon modal instead of actual submission
-    setShowComingSoon(true)
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+
+    try {
+      // Save email to waitlist
+      await client.models.Waitlist.create({
+        email: email.trim(),
+        signedUpAt: new Date().toISOString(),
+        source: 'homepage'
+      })
+
+      setSubmitStatus('success')
+      setEmail('') // Clear the form
+      
+      // Reset success state after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle')
+      }, 5000)
+    } catch (error) {
+      console.error('Error saving to waitlist:', error)
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const stats: Stat[] = [
@@ -90,18 +121,41 @@ const CTA: React.FC = () => {
             
             <motion.button
               type="submit"
-              disabled={false}
-              className="cta-submit-button"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              disabled={isSubmitting || submitStatus === 'success'}
+              className={`cta-submit-button ${submitStatus === 'success' ? 'cta-submit-success' : ''}`}
+              whileHover={!isSubmitting ? { scale: 1.05 } : {}}
+              whileTap={!isSubmitting ? { scale: 0.95 } : {}}
             >
-              <span>Join Waitlist</span>
-              <ArrowRight className="cta-submit-icon" />
+              {submitStatus === 'success' ? (
+                <>
+                  <CheckCircle className="cta-submit-icon" />
+                  <span>You're on the list!</span>
+                </>
+              ) : isSubmitting ? (
+                <>
+                  <div className="cta-spinner" />
+                  <span>Joining...</span>
+                </>
+              ) : (
+                <>
+                  <span>Join Waitlist</span>
+                  <ArrowRight className="cta-submit-icon" />
+                </>
+              )}
             </motion.button>
           </form>
 
+          {submitStatus === 'error' && (
+            <div className="cta-error-message">
+              <AlertCircle className="cta-error-icon" />
+              <span>Something went wrong. Please try again.</span>
+            </div>
+          )}
+
           <p className="cta-form-note">
-            No spam, ever. We'll notify you when early access opens.
+            {submitStatus === 'success' 
+              ? "Thank you! We'll notify you when early access opens." 
+              : "No spam, ever. We'll notify you when early access opens."}
           </p>
         </motion.div>
 
@@ -133,11 +187,32 @@ const CTA: React.FC = () => {
           ))}
         </motion.div>
 
+        {/* Business Contact Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="cta-contact-section"
+        >
+          <p className="cta-contact-text">
+            Questions or want to set up a meeting?
+          </p>
+          <motion.a
+            href="mailto:hi@symentic.dev"
+            className="cta-contact-email"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Contact us at hi@symentic.dev
+          </motion.a>
+        </motion.div>
+
         {/* Enhanced footer links */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
           viewport={{ once: true }}
           className="cta-footer"
         >
@@ -173,7 +248,7 @@ const CTA: React.FC = () => {
           </div>
           
           <div className="cta-footer-copyright">
-            © 2024 Symentic Platform. All rights reserved.
+            © 2025 Symentic Platform. All rights reserved.
           </div>
         </motion.div>
 

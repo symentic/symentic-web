@@ -167,8 +167,8 @@
 
 .about-us-founders-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 50px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
   margin-top: 50px;
 }
 
@@ -190,6 +190,26 @@
 
 .about-us-founder-content {
   padding: 40px;
+}
+
+.about-us-founder-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.about-us-founder-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(99, 102, 241, 0.3);
+  transition: all 0.3s ease;
+}
+
+.about-us-founder-image:hover {
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: scale(1.05);
 }
 
 .about-us-founder-header {
@@ -289,7 +309,22 @@
   margin-right: auto;
 }
 
-.about-us-contact-button {
+.about-us-contact-email-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.about-us-contact-label {
+  font-size: 1.1rem;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.about-us-contact-email-button {
+  display: inline-block;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
   border: none;
@@ -299,6 +334,26 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.about-us-contact-email-button:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+.about-us-contact-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .about-us-contact-button:hover {
@@ -335,7 +390,7 @@
     grid-template-columns: 1fr;
     gap: 30px;
   }
-
+  
   .about-us-founder-content {
     padding: 30px;
   }
