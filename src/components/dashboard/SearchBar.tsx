@@ -1,5 +1,6 @@
 import React from 'react'
 import { Search } from 'lucide-react'
+import styles from '../../styles/dashboard/Dashboard.module.css'
 
 interface SearchBarProps {
   value: string
@@ -13,14 +14,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = 'Search...'
 }) => {
   return (
-    <div className="search-bar">
-      <Search size={20} className="search-icon" />
+    <div className={styles.searchContainer}>
+      <Search size={18} className={styles.searchIcon} />
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="search-input"
+        className={styles.searchInput}
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"

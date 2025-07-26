@@ -1,5 +1,7 @@
 import React from 'react'
 import { EngramProfile } from './EngramProfile'
+import { Users } from 'lucide-react'
+import styles from '../../styles/dashboard/Dashboard.module.css'
 
 interface ProfileGridProps {
   engrams: any[]
@@ -14,14 +16,16 @@ export const ProfileGrid: React.FC<ProfileGridProps> = ({
 }) => {
   if (engrams.length === 0) {
     return (
-      <div className="profile-grid-empty">
-        <p>No engram profiles found.</p>
+      <div className={styles.empty}>
+        <Users className={styles.emptyIcon} />
+        <h3 className={styles.emptyTitle}>No profiles found</h3>
+        <p className={styles.emptyText}>Try adjusting your filters or create a new profile to get started.</p>
       </div>
     )
   }
 
   return (
-    <div className="profile-grid">
+    <div className={styles.grid}>
       {engrams.map((engram) => {
         const name = engram.name || 'Unknown'
         const email = engram.email || undefined

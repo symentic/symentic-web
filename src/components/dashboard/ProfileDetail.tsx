@@ -1,5 +1,6 @@
 import React from 'react'
-import { X, Calendar, Mail, Shield, Clock, Tag, User } from 'lucide-react'
+import { X, Mail, Tag } from 'lucide-react'
+import styles from '../../styles/dashboard/Modal.module.css'
 
 interface ProfileDetailProps {
   engram: any
@@ -45,139 +46,137 @@ export const ProfileDetail: React.FC<ProfileDetailProps> = ({
   }
 
   return (
-    <div className="profile-detail-overlay" onClick={onClose}>
-      <div className="profile-detail" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>
-          <X size={24} />
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={`${styles.modal} ${styles.detailModal}`} onClick={(e) => e.stopPropagation()}>
+        <button className={styles.closeButton} onClick={onClose}>
+          <X size={20} />
         </button>
 
-        <div className="detail-header">
-          <div className="detail-info">
-            <h2>{name}</h2>
-            {role && <p className="detail-role">{role}</p>}
-            {email && (
-              <p className="detail-email">
-                <Mail size={16} />
-                {email}
-              </p>
-            )}
-          </div>
+        <div className={styles.detailHeader}>
+          <h2 className={styles.detailName}>{name}</h2>
+          {role && <p className={styles.detailRole}>{role}</p>}
+          {email && (
+            <p className={styles.detailEmail}>
+              <Mail size={16} />
+              {email}
+            </p>
+          )}
         </div>
 
-        <div className="detail-sections">
-          <section className="detail-section">
-            <h3>Basic Information</h3>
-            <div className="detail-grid">
-              <div className="detail-item">
-                <span className="detail-label">User Type</span>
-                <span className="detail-value">{userType || 'N/A'}</span>
+        <div className={styles.detailSections}>
+          <section className={styles.detailSection}>
+            <h3 className={styles.detailSectionTitle}>Basic Information</h3>
+            <div className={styles.detailGrid}>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>User Type</span>
+                <span className={styles.detailValue}>{userType || 'N/A'}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Source</span>
-                <span className="detail-value">{source || 'N/A'}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Source</span>
+                <span className={styles.detailValue}>{source || 'N/A'}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">User ID</span>
-                <span className="detail-value">{userId || 'N/A'}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>User ID</span>
+                <span className={styles.detailValue}>{userId || 'N/A'}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Business ID</span>
-                <span className="detail-value">{businessId || 'N/A'}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Business ID</span>
+                <span className={styles.detailValue}>{businessId || 'N/A'}</span>
               </div>
             </div>
           </section>
 
           {description && (
-            <section className="detail-section">
-              <h3>Description</h3>
+            <section className={styles.detailSection}>
+              <h3 className={styles.detailSectionTitle}>Description</h3>
               <p>{description}</p>
             </section>
           )}
 
-          <section className="detail-section">
-            <h3>Slack Profile</h3>
-            <div className="detail-grid">
-              <div className="detail-item">
-                <span className="detail-label">Display Name</span>
-                <span className="detail-value">{displayName || 'N/A'}</span>
+          <section className={styles.detailSection}>
+            <h3 className={styles.detailSectionTitle}>Slack Profile</h3>
+            <div className={styles.detailGrid}>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Display Name</span>
+                <span className={styles.detailValue}>{displayName || 'N/A'}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Real Name</span>
-                <span className="detail-value">{realName || 'N/A'}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Real Name</span>
+                <span className={styles.detailValue}>{realName || 'N/A'}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Title</span>
-                <span className="detail-value">{title || 'N/A'}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Title</span>
+                <span className={styles.detailValue}>{title || 'N/A'}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Timezone</span>
-                <span className="detail-value">{timezone || 'N/A'}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Timezone</span>
+                <span className={styles.detailValue}>{timezone || 'N/A'}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Status</span>
-                <span className="detail-value">{statusText || 'N/A'}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Status</span>
+                <span className={styles.detailValue}>{statusText || 'N/A'}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Permissions</span>
-                <span className="detail-value">
-                  {isOwner && <span className="badge owner">Owner</span>}
-                  {isAdmin && <span className="badge admin">Admin</span>}
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Permissions</span>
+                <span className={styles.detailValue}>
+                  {isOwner && <span className={`${styles.badge} ${styles.owner}`}>Owner</span>}
+                  {isAdmin && <span className={`${styles.badge} ${styles.admin}`}>Admin</span>}
                   {!isOwner && !isAdmin && <span>Member</span>}
                 </span>
               </div>
             </div>
           </section>
 
-          <section className="detail-section">
-            <h3>Activity & Timeline</h3>
-            <div className="detail-grid">
-              <div className="detail-item">
-                <span className="detail-label">First Seen</span>
-                <span className="detail-value">{formatDate(firstSeen)}</span>
+          <section className={styles.detailSection}>
+            <h3 className={styles.detailSectionTitle}>Activity & Timeline</h3>
+            <div className={styles.detailGrid}>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>First Seen</span>
+                <span className={styles.detailValue}>{formatDate(firstSeen)}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Last Interaction</span>
-                <span className="detail-value">{formatDate(lastInteraction)}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Last Interaction</span>
+                <span className={styles.detailValue}>{formatDate(lastInteraction)}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Last Updated</span>
-                <span className="detail-value">{formatDate(lastUpdated)}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Last Updated</span>
+                <span className={styles.detailValue}>{formatDate(lastUpdated)}</span>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Interaction Count</span>
-                <span className="detail-value">{interactionCount || '0'}</span>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Interaction Count</span>
+                <span className={styles.detailValue}>{interactionCount || '0'}</span>
               </div>
             </div>
           </section>
 
           {consent && (
-            <section className="detail-section">
-              <h3>Consent Information</h3>
-              <div className="detail-grid">
-                <div className="detail-item">
-                  <span className="detail-label">Consent Given</span>
-                  <span className="detail-value">
+            <section className={styles.detailSection}>
+              <h3 className={styles.detailSectionTitle}>Consent Information</h3>
+              <div className={styles.detailGrid}>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Consent Given</span>
+                  <span className={styles.detailValue}>
                     {consentGiven ? 'Yes' : 'No'}
                   </span>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Method</span>
-                  <span className="detail-value">{consentMethod || 'N/A'}</span>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Method</span>
+                  <span className={styles.detailValue}>{consentMethod || 'N/A'}</span>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Timestamp</span>
-                  <span className="detail-value">{formatDate(consentTimestamp)}</span>
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Timestamp</span>
+                  <span className={styles.detailValue}>{formatDate(consentTimestamp)}</span>
                 </div>
               </div>
             </section>
           )}
 
           {tags.length > 0 && (
-            <section className="detail-section">
-              <h3>Tags</h3>
-              <div className="detail-tags">
+            <section className={styles.detailSection}>
+              <h3 className={styles.detailSectionTitle}>Tags</h3>
+              <div className={styles.detailTags}>
                 {tags.map((tag, index) => (
-                  <span key={index} className="detail-tag">
+                  <span key={index} className={styles.detailTag}>
                     <Tag size={14} />
                     {tag}
                   </span>

@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from '../../styles/dashboard/Dashboard.module.css'
 
 interface EngramProfileProps {
   name: string
@@ -18,26 +19,24 @@ export const EngramProfile: React.FC<EngramProfileProps> = ({
   onClick
 }) => {
   return (
-    <div className="engram-profile" onClick={onClick}>
-      <div className="profile-header">
-        <div className="profile-info">
-          <h3>{name}</h3>
-          {role && <p className="profile-role">{role}</p>}
-          {email && <p className="profile-email">{email}</p>}
-        </div>
+    <div className={styles.profileCard} onClick={onClick}>
+      <div className={styles.profileHeader}>
+        <h3 className={styles.profileName}>{name}</h3>
+        {role && <p className={styles.profileRole}>{role}</p>}
+        {email && <p className={styles.profileEmail}>{email}</p>}
       </div>
       
-      <div className="profile-meta">
+      <div className={styles.profileMeta}>
         {userType && (
-          <span className={`user-type ${userType}`}>
+          <span className={`${styles.userType} ${styles[userType]}`}>
             {userType}
           </span>
         )}
         
         {tags && tags.length > 0 && (
-          <div className="profile-tags">
+          <div className={styles.profileTags}>
             {tags.map((tag, index) => (
-              <span key={index} className="tag">
+              <span key={index} className={styles.profileTag}>
                 {tag}
               </span>
             ))}
