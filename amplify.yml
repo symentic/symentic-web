@@ -1,17 +1,25 @@
 version: 1
 backend:
   phases:
+    preBuild:
+      commands:
+        - nvm install 20
+        - nvm use 20
+        - node --version
+        - npm --version
     build:
       commands:
-        - rm -rf node_modules package-lock.json .npm || true
-        - npm install --no-cache
+        - rm -rf node_modules package-lock.json || true
+        - npm install
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 frontend:
   phases:
     preBuild:
       commands:
-        - rm -rf node_modules package-lock.json .npm || true
-        - npm install --no-cache
+        - nvm install 20
+        - nvm use 20
+        - node --version
+        - npm --version
     build:
       commands:
         - npm run build
