@@ -1,6 +1,7 @@
 import React from 'react'
 import { Users, Filter, Home, Shield} from 'lucide-react'
 import symenticLogo from '../../assets/symentic.png'
+import styles from '../../styles/dashboard/Dashboard.module.css'
 
 interface SidebarProps {
   selectedFilter: string
@@ -22,36 +23,36 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ]
 
   return (
-    <div className="dashboard-sidebar">
-      <div className="sidebar-header">
-        <div className="sidebar-logo">
-          <img src={symenticLogo} alt="Symentic" />
-          <h2>Symentic</h2>
+    <div className={styles.sidebar}>
+      <div className={styles.sidebarHeader}>
+        <div className={styles.logo}>
+          <img src={symenticLogo} alt="Symentic" className={styles.logoImg} />
+          <h2 className={styles.logoText}>Symentic</h2>
         </div>
-        <p className="sidebar-subtitle">Engram Management Console</p>
+        <p className={styles.subtitle}>Engram Management</p>
       </div>
 
-      <div className="sidebar-stats">
-        <div className="stat">
-          <span className="stat-value">{engramCount}</span>
-          <span className="stat-label">Filtered</span>
+      <div className={styles.stats}>
+        <div className={styles.stat}>
+          <span className={styles.statValue}>{engramCount}</span>
+          <span className={styles.statLabel}>Filtered</span>
         </div>
-        <div className="stat">
-          <span className="stat-value">{totalCount}</span>
-          <span className="stat-label">Total</span>
+        <div className={styles.stat}>
+          <span className={styles.statValue}>{totalCount}</span>
+          <span className={styles.statLabel}>Total</span>
         </div>
       </div>
 
-      <div className="sidebar-filters">
-        <h3>
-          <Filter size={16} />
+      <div className={styles.filters}>
+        <h3 className={styles.filtersTitle}>
+          <Filter size={14} />
           Filters
         </h3>
-        <ul>
+        <ul className={styles.filterList}>
           {filters.map(filter => (
             <li 
               key={filter.id}
-              className={selectedFilter === filter.id ? 'active' : ''}
+              className={`${styles.filterItem} ${selectedFilter === filter.id ? styles.active : ''}`}
               onClick={() => onFilterChange(filter.id)}
             >
               {filter.icon}
@@ -61,7 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </ul>
       </div>
 
-      <div className="sidebar-footer">
+      <div className={styles.footer}>
         <p>© 2025 Symentic</p>
       </div>
     </div>

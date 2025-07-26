@@ -1,5 +1,6 @@
 import React from 'react'
-import { Tag, X } from 'lucide-react'
+import { Tag } from 'lucide-react'
+import styles from '../../styles/dashboard/Dashboard.module.css'
 
 interface TagFilterProps {
   availableTags: string[]
@@ -25,30 +26,29 @@ export const TagFilter: React.FC<TagFilterProps> = ({
   }
 
   return (
-    <div className="tag-filter-container">
-      <div className="tag-filter-header">
-        <Tag size={16} />
-        <span>Filter by tags:</span>
+    <div className={styles.tagFilter}>
+      <div className={styles.tagFilterLabel}>
+        <Tag size={14} />
+        <span>Tags:</span>
+      </div>
+      <div className={styles.tagList}>
+        {availableTags.map(tag => (
+          <button
+            key={tag}
+            className={`${styles.tag} ${selectedTags.includes(tag) ? styles.active : ''}`}
+            onClick={() => toggleTag(tag)}
+          >
+            {tag}
+          </button>
+        ))}
       </div>
       <button 
-        className="clear-all-tags"
+        className={styles.clearButton}
         onClick={() => onTagsChange([])}
         disabled={selectedTags.length === 0}
       >
         Clear all
       </button>
-      <div className="tag-filter-list">
-        {availableTags.map(tag => (
-          <button
-            key={tag}
-            className={`tag-filter-chip ${selectedTags.includes(tag) ? 'active' : ''}`}
-            onClick={() => toggleTag(tag)}
-          >
-            {tag}
-            {selectedTags.includes(tag) && <X size={14} />}
-          </button>
-        ))}
-      </div>
     </div>
   )
 }

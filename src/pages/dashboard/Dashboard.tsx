@@ -7,10 +7,15 @@ import { TagFilter } from '../../components/dashboard/TagFilter'
 import { ProfileGrid } from '../../components/dashboard/ProfileGrid'
 import { ProfileDetail } from '../../components/dashboard/ProfileDetail'
 import { CreateProfileModal } from '../../components/dashboard/CreateProfileModal'
+import { ProfileSkeleton } from '../../components/dashboard/ProfileSkeleton'
 import { EngramProfileService } from '../../services/engramProfileService'
-import '../../styles/dashboard/Dashboard.css'
+import { useTheme } from '../../contexts/ThemeContext'
+import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts'
+import { Sun, Moon } from 'lucide-react'
+import styles from '../../styles/dashboard/Dashboard.module.css'
 
 const Dashboard: React.FC = () => {
+  const { theme, toggleTheme } = useTheme()
   const [engrams, setEngrams] = useState<Schema['EngramProfile']['type'][]>([])
   const [filteredEngrams, setFilteredEngrams] = useState<Schema['EngramProfile']['type'][]>([])
   const [selectedEngram, setSelectedEngram] = useState<Schema['EngramProfile']['type'] | null>(null)
@@ -23,6 +28,23 @@ const Dashboard: React.FC = () => {
   
   // Business ID for demo purposes
   const businessId = 'T096L62N0MB'
+  
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    'cmd+k': () => {
+      const searchInput = document.querySelector(`.${styles.searchInput}`) as HTMLInputElement
+      searchInput?.focus()
+    },
+    'cmd+n': () => setShowCreateModal(true),
+    'cmd+shift+t': () => toggleTheme(),
+    'escape': () => {
+      setSelectedEngram(null)
+      setShowCreateModal(false)
+    },
+    '1': () => setSelectedFilter('all'),
+    '2': () => setSelectedFilter('internal'),
+    '3': () => setSelectedFilter('external'),
+  })
 
   useEffect(() => {
     fetchEngrams()
@@ -95,7 +117,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="dashboard">
+    <div className={styles.dashboard}>
       <Sidebar 
         selectedFilter={selectedFilter}
         onFilterChange={setSelectedFilter}
@@ -103,18 +125,27 @@ const Dashboard: React.FC = () => {
         totalCount={engrams.length}
       />
       
-      <div className="dashboard-main">
-        <div className="dashboard-header">
-          <h1>Engram Console</h1>
-          <div className="header-actions">
+      <div className={styles.main}>
+        <div className={styles.header}>
+          <h1 className={styles.headerTitle}>Engram Console</h1>
+          <div className={styles.headerActions}>
+            <button 
+              className={styles.themeToggle}
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              title="Toggle theme (⌘+Shift+T)"
+            >
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
             <SearchBar 
               value={searchQuery}
               onChange={setSearchQuery}
-              placeholder="Search by name, email, or role..."
+              placeholder="Search by name, email, or role... (⌘+K)"
             />
             <button 
-              className="create-profile-btn"
+              className={styles.createButton}
               onClick={() => setShowCreateModal(true)}
+              title="Create new profile (⌘+N)"
             >
               + Create Profile
             </button>
@@ -127,16 +158,17 @@ const Dashboard: React.FC = () => {
           onTagsChange={setSelectedTags}
         />
 
-        <div className="dashboard-content">
+        <div className={styles.content}>
           {isLoading ? (
-            <div className="dashboard-loading">
-              <div className="loading-spinner"></div>
-              <p>Loading engram profiles...</p>
+            <div className={styles.grid}>
+              {[...Array(6)].map((_, i) => (
+                <ProfileSkeleton key={i} />
+              ))}
             </div>
           ) : error ? (
-            <div className="dashboard-error">
-              <p>{error}</p>
-              <button onClick={fetchEngrams}>Retry</button>
+            <div className={styles.error}>
+              <p className={styles.errorText}>{error}</p>
+              <button className={styles.retryButton} onClick={fetchEngrams}>Retry</button>
             </div>
           ) : (
             <>
