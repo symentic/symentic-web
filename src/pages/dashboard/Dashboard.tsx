@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import type { Schema } from '../../../amplify/data/resource'
-import { EngramProfile } from '../../components/dashboard/EngramProfile'
 import { Sidebar } from '../../components/dashboard/Sidebar'
 import { SearchBar } from '../../components/dashboard/SearchBar'
 import { TagFilter } from '../../components/dashboard/TagFilter'
@@ -8,7 +6,7 @@ import { ProfileGrid } from '../../components/dashboard/ProfileGrid'
 import { ProfileDetail } from '../../components/dashboard/ProfileDetail'
 import { CreateProfileModal } from '../../components/dashboard/CreateProfileModal'
 import { ProfileSkeleton } from '../../components/dashboard/ProfileSkeleton'
-import { EngramProfileService } from '../../services/engramProfileService'
+import { ExistingEngramProfileService } from '../../services/existingEngramProfileService'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts'
 import { Sun, Moon } from 'lucide-react'
@@ -16,9 +14,9 @@ import styles from '../../styles/dashboard/Dashboard.module.css'
 
 const Dashboard: React.FC = () => {
   const { theme, toggleTheme } = useTheme()
-  const [engrams, setEngrams] = useState<Schema['EngramProfile']['type'][]>([])
-  const [filteredEngrams, setFilteredEngrams] = useState<Schema['EngramProfile']['type'][]>([])
-  const [selectedEngram, setSelectedEngram] = useState<Schema['EngramProfile']['type'] | null>(null)
+  const [engrams, setEngrams] = useState<any[]>([])
+  const [filteredEngrams, setFilteredEngrams] = useState<any[]>([])
+  const [selectedEngram, setSelectedEngram] = useState<any | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -26,7 +24,7 @@ const Dashboard: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [showCreateModal, setShowCreateModal] = useState(false)
   
-  // Business ID for demo purposes
+  // Default business ID for creating new profiles
   const businessId = 'T096L62N0MB'
   
   // Keyboard shortcuts
@@ -59,7 +57,7 @@ const Dashboard: React.FC = () => {
       setIsLoading(true)
       setError(null)
       
-      const data = await EngramProfileService.listProfilesByBusiness(businessId)
+      const data = await ExistingEngramProfileService.listAllProfiles()
       
       if (data) {
         setEngrams(data)

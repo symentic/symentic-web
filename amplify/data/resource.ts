@@ -7,14 +7,14 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
   
-<<<<<<< HEAD
   Waitlist: a
     .model({
       email: a.string().required(),
       signedUpAt: a.datetime(),
       source: a.string(), // e.g. "homepage", "about-us", etc.
     })
-=======
+    .authorization((allow) => [allow.publicApiKey()]),
+
   EngramProfile: a
     .model({
       // Composite key fields
@@ -76,7 +76,6 @@ const schema = a.schema({
     .secondaryIndexes((index) => [
       index('GSI1PK').sortKeys(['GSI1SK']).queryField('engramsByBusinessAndType'),
     ])
->>>>>>> e0b2c7a (d)
     .authorization((allow) => [allow.publicApiKey()]),
 });
 

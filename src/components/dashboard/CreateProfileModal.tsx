@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { EngramProfileService, CreateEngramProfileInput } from '../../services/engramProfileService'
+import { ExistingExistingEngramProfileService, CreateEngramProfileInput } from '../../services/existingExistingEngramProfileService'
 import { RefreshCw, UserPlus, AlertCircle, Info, X } from 'lucide-react'
 import styles from '../../styles/dashboard/Modal.module.css'
 
@@ -43,23 +43,36 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
       setIsLoading(true)
       setError(null)
       
-      // Check if profile already exists
-      const existingProfile = await EngramProfileService.getProfile(businessId, formData.userId!)
-      
-      if (existingProfile) {
-        setError(`A profile already exists for User ID: ${formData.userId}`)
-        setIsLoading(false)
-        return
-      }
-      
-      await EngramProfileService.createProfile({
-        ...formData,
+      const profileData: CreateEngramProfileInput = {
         businessId,
         userId: formData.userId!,
         name: formData.name!,
         email: formData.email!,
-        userType: formData.userType as 'internal' | 'external'
-      })
+        userType: formData.userType as 'internal' | 'external',
+        description: formData.description,
+        role: formData.role,
+        source: formData.source || 'manual',
+        tags: formData.tags || [],
+        expertise: [],
+        enrichments: []
+      }
+      
+      // Only add slackProfile if slackUserId is provided
+      if (formData.slackProfile?.slackUserId) {
+        profileData.slackProfile = {
+          slackUserId: formData.slackProfile.slackUserId,
+          displayName: formData.slackProfile.displayName,
+          realName: formData.slackProfile.realName,
+          title: formData.slackProfile.title,
+          statusText: formData.slackProfile.statusText,
+          timezone: formData.slackProfile.timezone,
+          profilePictureUrl: formData.slackProfile.profilePictureUrl,
+          isAdmin: formData.slackProfile.isAdmin || false,
+          isOwner: formData.slackProfile.isOwner || false
+        }
+      }
+      
+      await ExistingEngramProfileService.createProfile(profileData)
       
       onSuccess()
       onClose()
@@ -67,13 +80,12 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
       console.error('Error creating profile:', err)
       
       // Handle specific error cases
-      if (err.message?.includes('conditional request failed')) {
+      if (err.message?.includes('ConditionalCheckFailedException') || err.message?.includes('Profile already exists')) {
         setError(`A profile already exists for User ID: ${formData.userId}`)
-      } else if (err.message?.includes('Profile not found')) {
-        // This is actually good - profile doesn't exist, but create failed for another reason
-        setError('Failed to create profile. Please check your input and try again.')
+      } else if (err.name === 'ConditionalCheckFailedException') {
+        setError(`A profile already exists for User ID: ${formData.userId}`)
       } else {
-        setError('Failed to create profile. Please try again.')
+        setError(err.message || 'Failed to create profile. Please try again.')
       }
     } finally {
       setIsLoading(false)
@@ -309,7 +321,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                       slackProfile: {
                         ...prev.slackProfile,
                         slackUserId: e.target.value
-                      }
+                      } as any
                     }))}
                     placeholder="U123456789"
                     autoComplete="off"
@@ -331,7 +343,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                       slackProfile: {
                         ...prev.slackProfile,
                         displayName: e.target.value
-                      }
+                      } as any
                     }))}
                     placeholder="@johndoe"
                     autoComplete="off"
