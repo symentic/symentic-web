@@ -58,6 +58,28 @@ body {
   overflow-x: hidden;
   background: var(--gradient-background);
   color: var(--color-slate-100);
+  position: relative;
+}
+
+/* Animated gradient background for glassmorphism effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 20% 80%, var(--color-purple-600) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, var(--color-cyan-500) 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, var(--color-purple-500) 0%, transparent 50%);
+  animation: rotate 30s linear infinite;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 #root {

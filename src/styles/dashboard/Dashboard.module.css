@@ -8,7 +8,8 @@
               color var(--transition-base), 
               border-color var(--transition-base),
               box-shadow var(--transition-base),
-              transform var(--transition-fast);
+              transform var(--transition-fast),
+              backdrop-filter var(--transition-base);
 }
 
 /* Smooth scrolling */
@@ -82,14 +83,16 @@ html {
 .dashboard {
   display: flex;
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: var(--glass-bg);
   color: var(--text-primary);
   font-family: var(--font-sans);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
 }
 
-/* Subtle gradient background */
+/* Glassmorphic texture overlay */
 .dashboard::before {
   content: '';
   position: absolute;
@@ -97,22 +100,37 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 30% 50%, var(--accent-light), transparent 60%);
-  opacity: 0.03;
+  background: var(--texture-overlay), var(--glass-texture);
   pointer-events: none;
+  z-index: 1;
+}
+
+/* Additional glass layer for depth */
+.dashboard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.01) 100%);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .sidebar {
   width: 240px;
-  background: var(--bg-secondary);
-  border-right: 1px solid var(--border-primary);
+  background: var(--glass-surface);
+  border-right: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
   padding: 0;
   animation: slideInLeft 0.3s ease-out;
   position: relative;
   z-index: 10;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(calc(var(--glass-blur) * 1.5)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 1.5)) saturate(var(--glass-saturation));
 }
 
 .sidebarHeader {
@@ -132,11 +150,13 @@ html {
   height: 40px;
   object-fit: contain;
   padding: 0px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--glass-shadow);
   transition: transform var(--transition-fast);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .logo:hover .logoImg {
@@ -180,9 +200,10 @@ html {
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--border-primary);
-  background: var(--bg-tertiary);
-  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(calc(var(--glass-blur) * 1.2));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 1.2));
 }
 
 .stat {
@@ -239,13 +260,17 @@ html {
   cursor: pointer;
   color: var(--text-secondary);
   font-size: 14px;
+  transition: all var(--transition-fast);
+  position: relative;
 }
 
 .filterItem:hover {
-  background: var(--surface-hover);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
   transform: translateX(4px);
   padding-left: 16px;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .filterItem.active {
@@ -254,6 +279,8 @@ html {
   font-weight: 500;
   border-left: 3px solid var(--accent-primary);
   padding-left: 9px;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .footer {
@@ -276,13 +303,15 @@ html {
   align-items: center;
   justify-content: space-between;
   padding: 24px 32px;
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-primary);
-  backdrop-filter: blur(10px);
+  background: var(--glass-surface);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(calc(var(--glass-blur) * 2)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 2)) saturate(var(--glass-saturation));
   position: sticky;
   top: 0;
   z-index: 100;
   animation: slideInUp 0.3s ease-out;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .headerTitle {
@@ -343,11 +372,14 @@ html {
   width: 40px;
   height: 40px;
   padding: 0;
-  background: transparent;
-  border: 1px solid var(--border-primary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   cursor: pointer;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  transition: all var(--transition-fast);
 }
 
 .themeToggle:hover {
@@ -376,12 +408,14 @@ html {
   width: 100%;
   height: 40px;
   padding: 0 12px 0 40px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   color: var(--text-primary);
   font-size: 14px;
   outline: none;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .searchInput::placeholder {
@@ -390,8 +424,8 @@ html {
 
 .searchInput:focus {
   border-color: var(--border-focus);
-  background: var(--bg-secondary);
-  box-shadow: 0 0 0 3px var(--accent-light);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px var(--accent-light), var(--glass-shadow);
   padding-left: 42px;
 }
 
@@ -403,11 +437,15 @@ html {
   padding: 0 16px;
   background: var(--accent-primary);
   color: white;
-  border: none;
+  border: 1px solid transparent;
   border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .createButton:hover {
@@ -422,12 +460,14 @@ html {
 
 .tagFilter {
   padding: 16px 32px;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-primary);
+  background: var(--glass-surface);
+  border-bottom: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   gap: 12px;
   overflow-x: auto;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .tagFilterLabel {
@@ -448,13 +488,16 @@ html {
 
 .tag {
   padding: 6px 12px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-secondary);
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   font-size: 13px;
   cursor: pointer;
   white-space: nowrap;
+  backdrop-filter: blur(calc(var(--glass-blur) * 0.5));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.5));
+  transition: all var(--transition-fast);
 }
 
 .tag:hover {
@@ -498,6 +541,8 @@ html {
   flex: 1;
   padding: 32px;
   overflow-y: auto;
+  position: relative;
+  z-index: 5;
 }
 
 .loading {
@@ -633,21 +678,28 @@ html {
 }
 
 .profileCard {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-primary);
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 20px;
   cursor: pointer;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  box-shadow: var(--glass-shadow);
+  transition: all var(--transition-base);
 }
 
 .profileCard {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-primary);
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 20px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  box-shadow: var(--glass-shadow);
 }
 
 .profileCard::before {
@@ -664,8 +716,9 @@ html {
 
 .profileCard:hover {
   border-color: var(--accent-primary);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), var(--glass-shadow);
   transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .profileCard:hover::before {
@@ -850,6 +903,45 @@ html {
   .footer {
     padding: 16px;
   }
+}
+
+/* Glassmorphic scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  margin: 4px;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  backdrop-filter: blur(calc(var(--glass-blur) * 0.5));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.5));
+  transition: all var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.02);
 }
 
 /* Hide scrollbars on mobile for horizontal scroll areas */
