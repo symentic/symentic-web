@@ -74,7 +74,7 @@ const Dashboard: React.FC = () => {
     const tagSet = new Set<string>()
     engrams.forEach(engram => {
       if (engram.tags) {
-        engram.tags.forEach(tag => tagSet.add(tag))
+        engram.tags.forEach((tag: string) => tagSet.add(tag))
       }
     })
     return Array.from(tagSet).sort()

@@ -43,6 +43,18 @@ html {
   50% { transform: scale(1.05); }
 }
 
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .dashboard {
   display: flex;
   min-height: 100vh;
@@ -92,10 +104,10 @@ html {
 }
 
 .logoImg {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
-  padding: 8px;
+  padding: 0px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
@@ -108,16 +120,35 @@ html {
 }
 
 .logoText {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 700;
   margin: 0;
-  color: var(--text-primary);
+  background: linear-gradient(
+    90deg,
+    #3b82f6,
+    #60a5fa,
+    #2563eb,
+    #6366f1,
+    #3b82f6
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 4s ease infinite;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  position: relative;
 }
 
 .subtitle {
-  font-size: 13px;
-  color: var(--text-secondary);
+  font-size: 11px;
+  color: var(--text-tertiary);
   margin: 0;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0.8;
 }
 
 .stats {
