@@ -54,13 +54,6 @@ export const ProfileDetail: React.FC<ProfileDetailProps> = ({
           </button>
           
           <div className={styles.detailProfileHeader}>
-            {profilePictureUrl ? (
-              <img src={profilePictureUrl} alt={name} className={styles.detailAvatar} />
-            ) : (
-              <div className={styles.detailAvatarPlaceholder}>
-                <User size={32} />
-              </div>
-            )}
             <div className={styles.detailHeaderInfo}>
               <h2 className={styles.detailName}>{name}</h2>
               {role && <p className={styles.detailRole}>{role}</p>}
