@@ -1,5 +1,5 @@
 import React from 'react'
-import { Users, Filter, Home, Shield} from 'lucide-react'
+import { Users, Filter, Home, Shield, Code } from 'lucide-react'
 import symenticLogo from '../../assets/symentic.png'
 import styles from '../../styles/dashboard/Dashboard.module.css'
 
@@ -8,13 +8,17 @@ interface SidebarProps {
   onFilterChange: (filter: string) => void
   engramCount: number
   totalCount: number
+  activeView: 'profiles' | 'api'
+  onViewChange: (view: 'profiles' | 'api') => void
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   selectedFilter,
   onFilterChange,
   engramCount,
-  totalCount
+  totalCount,
+  activeView,
+  onViewChange
 }) => {
   const filters = [
     { id: 'all', label: 'Engrams', icon: <Home size={18} /> },
@@ -32,35 +36,59 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <p className={styles.subtitle}>Engram Management</p>
       </div>
 
-      <div className={styles.stats}>
-        <div className={styles.stat}>
-          <span className={styles.statValue}>{engramCount}</span>
-          <span className={styles.statLabel}>Filtered</span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.statValue}>{totalCount}</span>
-          <span className={styles.statLabel}>Total</span>
-        </div>
-      </div>
-
-      <div className={styles.filters}>
-        <h3 className={styles.filtersTitle}>
-          <Filter size={14} />
-          Filters
-        </h3>
-        <ul className={styles.filterList}>
-          {filters.map(filter => (
-            <li 
-              key={filter.id}
-              className={`${styles.filterItem} ${selectedFilter === filter.id ? styles.active : ''}`}
-              onClick={() => onFilterChange(filter.id)}
-            >
-              {filter.icon}
-              <span>{filter.label}</span>
-            </li>
-          ))}
+      <div className={styles.navigation}>
+        <h3 className={styles.navTitle}>Navigation</h3>
+        <ul className={styles.navList}>
+          <li 
+            className={`${styles.navItem} ${activeView === 'profiles' ? styles.active : ''}`}
+            onClick={() => onViewChange('profiles')}
+          >
+            <Users size={18} />
+            <span>Profiles</span>
+          </li>
+          <li 
+            className={`${styles.navItem} ${activeView === 'api' ? styles.active : ''}`}
+            onClick={() => onViewChange('api')}
+          >
+            <Code size={18} />
+            <span>API Integration</span>
+          </li>
         </ul>
       </div>
+
+      {activeView === 'profiles' && (
+        <>
+          <div className={styles.stats}>
+            <div className={styles.stat}>
+              <span className={styles.statValue}>{engramCount}</span>
+              <span className={styles.statLabel}>Filtered</span>
+            </div>
+            <div className={styles.stat}>
+              <span className={styles.statValue}>{totalCount}</span>
+              <span className={styles.statLabel}>Total</span>
+            </div>
+          </div>
+
+          <div className={styles.filters}>
+            <h3 className={styles.filtersTitle}>
+              <Filter size={14} />
+              Filters
+            </h3>
+            <ul className={styles.filterList}>
+              {filters.map(filter => (
+                <li 
+                  key={filter.id}
+                  className={`${styles.filterItem} ${selectedFilter === filter.id ? styles.active : ''}`}
+                  onClick={() => onFilterChange(filter.id)}
+                >
+                  {filter.icon}
+                  <span>{filter.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
 
       <div className={styles.footer}>
         <p>© 2025 Symentic</p>
