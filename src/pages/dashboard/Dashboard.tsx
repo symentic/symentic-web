@@ -6,6 +6,7 @@ import { ProfileGrid } from '../../components/dashboard/ProfileGrid'
 import { ProfileDetail } from '../../components/dashboard/ProfileDetail'
 import { CreateProfileModal } from '../../components/dashboard/CreateProfileModal'
 import { ProfileSkeleton } from '../../components/dashboard/ProfileSkeleton'
+import { APIIntegration } from '../../components/dashboard/APIIntegration'
 import { ExistingEngramProfileService } from '../../services/existingEngramProfileService'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts'
@@ -23,6 +24,7 @@ const Dashboard: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [activeView, setActiveView] = useState<'profiles' | 'api'>('profiles')
   
   // Default business ID for creating new profiles
   const businessId = 'T096L62N0MB'
@@ -121,70 +123,78 @@ const Dashboard: React.FC = () => {
         onFilterChange={setSelectedFilter}
         engramCount={filteredEngrams.length}
         totalCount={engrams.length}
+        activeView={activeView}
+        onViewChange={setActiveView}
       />
       
       <div className={styles.main}>
-        <div className={styles.header}>
-          <h1 className={styles.headerTitle}></h1>
-          <div className={styles.headerActions}>
-            <button 
-              className={styles.themeToggle}
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              title="Toggle theme (⌘+Shift+T)"
-            >
-              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-            </button>
-            <SearchBar 
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Search by name, email, or role... (⌘+K)"
-            />
-            <button 
-              className={styles.createButton}
-              onClick={() => setShowCreateModal(true)}
-              title="Create new profile (⌘+N)"
-            >
-              + Create Profile
-            </button>
-          </div>
-        </div>
-
-        <TagFilter
-          availableTags={getAllUniqueTags()}
-          selectedTags={selectedTags}
-          onTagsChange={setSelectedTags}
-        />
-
-        <div className={styles.content}>
-          {isLoading ? (
-            <div className={styles.grid}>
-              {[...Array(6)].map((_, i) => (
-                <ProfileSkeleton key={i} />
-              ))}
-            </div>
-          ) : error ? (
-            <div className={styles.error}>
-              <p className={styles.errorText}>{error}</p>
-              <button className={styles.retryButton} onClick={fetchEngrams}>Retry</button>
-            </div>
-          ) : (
-            <>
-              <ProfileGrid 
-                engrams={filteredEngrams}
-                selectedEngram={selectedEngram}
-                onSelectEngram={setSelectedEngram}
-              />
-              
-              {selectedEngram && (
-                <ProfileDetail 
-                  engram={selectedEngram}
-                  onClose={() => setSelectedEngram(null)}
+        {activeView === 'profiles' ? (
+          <>
+            <div className={styles.header}>
+              <h1 className={styles.headerTitle}></h1>
+              <div className={styles.headerActions}>
+                <button 
+                  className={styles.themeToggle}
+                  onClick={toggleTheme}
+                  aria-label="Toggle theme"
+                  title="Toggle theme (⌘+Shift+T)"
+                >
+                  {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+                </button>
+                <SearchBar 
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Search by name, email, or role... (⌘+K)"
                 />
+                <button 
+                  className={styles.createButton}
+                  onClick={() => setShowCreateModal(true)}
+                  title="Create new profile (⌘+N)"
+                >
+                  + Create Profile
+                </button>
+              </div>
+            </div>
+
+            <TagFilter
+              availableTags={getAllUniqueTags()}
+              selectedTags={selectedTags}
+              onTagsChange={setSelectedTags}
+            />
+
+            <div className={styles.content}>
+              {isLoading ? (
+                <div className={styles.grid}>
+                  {[...Array(6)].map((_, i) => (
+                    <ProfileSkeleton key={i} />
+                  ))}
+                </div>
+              ) : error ? (
+                <div className={styles.error}>
+                  <p className={styles.errorText}>{error}</p>
+                  <button className={styles.retryButton} onClick={fetchEngrams}>Retry</button>
+                </div>
+              ) : (
+                <>
+                  <ProfileGrid 
+                    engrams={filteredEngrams}
+                    selectedEngram={selectedEngram}
+                    onSelectEngram={setSelectedEngram}
+                  />
+                  
+                  {selectedEngram && (
+                    <ProfileDetail 
+                      engram={selectedEngram}
+                      onClose={() => setSelectedEngram(null)}
+                    />
+                  )}
+                </>
               )}
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        ) : (
+          <APIIntegration />
+        )}
       </div>
       
       {showCreateModal && (
