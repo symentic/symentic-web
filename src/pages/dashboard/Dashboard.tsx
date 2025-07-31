@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
       
       <div className={styles.main}>
         <div className={styles.header}>
-          <h1 className={styles.headerTitle}>welcome to the Origin Layer...</h1>
+          <h1 className={styles.headerTitle}></h1>
           <div className={styles.headerActions}>
             <button 
               className={styles.themeToggle}

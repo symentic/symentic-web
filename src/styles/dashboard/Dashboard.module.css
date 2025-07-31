@@ -355,7 +355,6 @@ html {
   background: var(--accent-primary);
   transform: skewX(-12deg);
   opacity: 0.8;
-  animation: blink 0.8s infinite;
 }
 
 .headerActions {
