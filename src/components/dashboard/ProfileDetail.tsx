@@ -1,5 +1,5 @@
 import React from 'react'
-import { X, Mail, Tag, User, Clock, Shield, Globe, CheckCircle, Activity, Calendar, Hash } from 'lucide-react'
+import { X, Mail, Tag, User, Clock, Shield, Globe, CheckCircle, Activity, Calendar, Hash, Sparkles } from 'lucide-react'
 import styles from '../../styles/dashboard/Modal.module.css'
 
 interface ProfileDetailProps {
@@ -39,6 +39,8 @@ export const ProfileDetail: React.FC<ProfileDetailProps> = ({
   const consentGiven = consent?.given
   const consentMethod = consent?.method
   const consentTimestamp = consent?.timestamp
+
+  const enrichments = engram.enrichments || []
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A'
@@ -178,6 +180,26 @@ export const ProfileDetail: React.FC<ProfileDetailProps> = ({
               </div>
             </div>
           </section>
+
+          {enrichments.length > 0 && (
+            <section className={styles.detailSection}>
+              <h3 className={styles.detailSectionTitle}>
+                <Sparkles size={16} />
+                Enrichments
+              </h3>
+              <div className={styles.enrichmentsList}>
+                {enrichments.map((enrichment, index) => (
+                  <div key={index} className={styles.enrichmentItem}>
+                    <div className={styles.enrichmentHeader}>
+                      <span className={styles.enrichmentAgent}>{enrichment.agent}</span>
+                      <span className={styles.enrichmentDate}>{enrichment.date}</span>
+                    </div>
+                    <p className={styles.enrichmentDetail}>{enrichment.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {consent && (
             <section className={styles.detailSection}>
