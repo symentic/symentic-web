@@ -42,9 +42,6 @@ const Dashboard: React.FC = () => {
       setSelectedEngram(null)
       setShowCreateModal(false)
     },
-    '1': () => setSelectedFilter('all'),
-    '2': () => setSelectedFilter('internal'),
-    '3': () => setSelectedFilter('external'),
   })
 
   useEffect(() => {
