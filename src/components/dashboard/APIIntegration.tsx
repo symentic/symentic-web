@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Code, Search, Tag, Copy, CheckCircle } from 'lucide-react'
+import { Code, Search, Copy, CheckCircle } from 'lucide-react'
 import styles from '../../styles/dashboard/Dashboard.module.css'
 
 interface APIIntegrationProps {
@@ -17,8 +17,6 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
   const [error, setError] = useState<string | null>(null)
   const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null)
   const [apiKey, setApiKey] = useState('')
-  const [testEndpoint, setTestEndpoint] = useState('/profiles')
-  const [customHeaders, setCustomHeaders] = useState('{\n  "Authorization": "Bearer your-api-key"\n}')
 
   const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.symentic.dev/api'
 
@@ -244,119 +242,6 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
     )
   }
 
-  const handleTestRequest = async () => {
-    setIsLoading(true)
-    setError(null)
-    setResults(null)
-
-    try {
-      let headers: Record<string, string> = {}
-      
-      // Parse custom headers
-      if (customHeaders) {
-        try {
-          headers = JSON.parse(customHeaders)
-        } catch (e) {
-          throw new Error('Invalid JSON in custom headers')
-        }
-      }
-
-      const response = await fetch(`${API_BASE_URL}${testEndpoint}`, {
-        method: 'GET',
-        headers
-      })
-
-      const data = await response.json()
-      
-      setResults({
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        data
-      })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const renderApiTester = () => (
-    <div className={styles.apiTester}>
-      <div className={styles.testSection}>
-        <h4>Custom API Request</h4>
-        
-        <div className={styles.inputGroup}>
-          <label>Endpoint:</label>
-          <div className={styles.endpointInput}>
-            <span className={styles.baseUrl}>{API_BASE_URL}</span>
-            <input
-              type="text"
-              value={testEndpoint}
-              onChange={(e) => setTestEndpoint(e.target.value)}
-              placeholder="/profiles"
-              className={styles.input}
-            />
-          </div>
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label>Headers (JSON):</label>
-          <textarea
-            value={customHeaders}
-            onChange={(e) => setCustomHeaders(e.target.value)}
-            className={styles.textarea}
-            rows={4}
-            placeholder='{"Authorization": "Bearer your-api-key"}'
-          />
-        </div>
-
-        <button
-          className={styles.testButton}
-          onClick={handleTestRequest}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Testing...' : 'Send Request'}
-        </button>
-      </div>
-
-      <div className={styles.quickTests}>
-        <h4>Quick Tests</h4>
-        <div className={styles.quickTestButtons}>
-          <button
-            className={styles.quickTestButton}
-            onClick={() => {
-              setTestEndpoint('/profiles')
-              handleTestRequest()
-            }}
-            disabled={isLoading}
-          >
-            List Profiles
-          </button>
-          <button
-            className={styles.quickTestButton}
-            onClick={() => {
-              setTestEndpoint('/profiles/search?q=developer')
-              handleTestRequest()
-            }}
-            disabled={isLoading}
-          >
-            Search "developer"
-          </button>
-          <button
-            className={styles.quickTestButton}
-            onClick={() => {
-              setTestEndpoint('/profiles/query?tags=frontend')
-              handleTestRequest()
-            }}
-            disabled={isLoading}
-          >
-            Query by tags
-          </button>
-        </div>
-      </div>
-    </div>
-  )
 
   const renderDocumentation = () => (
     <div className={styles.apiDocs}>
@@ -473,13 +358,6 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
             Query Builder
           </button>
           <button
-            className={`${styles.apiTab} ${activeTab === 'test' ? styles.active : ''}`}
-            onClick={() => setActiveTab('test')}
-          >
-            <Tag size={16} />
-            API Tester
-          </button>
-          <button
             className={`${styles.apiTab} ${activeTab === 'docs' ? styles.active : ''}`}
             onClick={() => setActiveTab('docs')}
           >
@@ -493,11 +371,6 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
         {activeTab === 'query' ? (
           <>
             {renderQueryBuilder()}
-            {renderResults()}
-          </>
-        ) : activeTab === 'test' ? (
-          <>
-            {renderApiTester()}
             {renderResults()}
           </>
         ) : (

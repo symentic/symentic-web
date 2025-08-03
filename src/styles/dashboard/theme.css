@@ -55,11 +55,16 @@
   /* Light mode glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-surface: rgba(255, 255, 255, 0.85);
+  --glass-darker: rgba(249, 250, 251, 0.95);
+  --glass-light: rgba(255, 255, 255, 0.6);
   --glass-border: rgba(200, 200, 200, 0.3);
   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   --texture-overlay: radial-gradient(circle at 20% 80%, rgba(79, 70, 229, 0.05) 0%, transparent 50%),
                      radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.05) 0%, transparent 50%),
                      radial-gradient(circle at 40% 40%, rgba(99, 102, 241, 0.03) 0%, transparent 50%);
+  
+  /* Additional accent colors for better contrast */
+  --accent-secondary: #5b21b6;
 }
 
 [data-theme="dark"] {
@@ -97,6 +102,8 @@
   /* Dark mode glassmorphism - black glass texture */
   --glass-bg: rgba(15, 15, 15, 0.8);
   --glass-surface: rgba(36, 36, 36, 0.5);
+  --glass-darker: rgba(25, 25, 25, 0.85);
+  --glass-light: rgba(45, 45, 45, 0.4);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
   --texture-overlay: radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
@@ -104,4 +111,7 @@
                      radial-gradient(circle at 40% 40%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
                      linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
   --glass-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  
+  /* Additional accent colors for better contrast */
+  --accent-secondary: #a78bfa;
 }
