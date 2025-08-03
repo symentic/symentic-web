@@ -30,6 +30,7 @@ dist-ssr
 *.sw?
 
 # amplify
+.claude
 .amplify
 amplify_outputs*
 amplifyconfiguration*
