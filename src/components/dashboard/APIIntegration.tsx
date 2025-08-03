@@ -16,8 +16,11 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null)
+  const [apiKey, setApiKey] = useState('')
+  const [testEndpoint, setTestEndpoint] = useState('/profiles')
+  const [customHeaders, setCustomHeaders] = useState('{\n  "Authorization": "Bearer your-api-key"\n}')
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.symentic.dev/api'
 
   const handleQuery = async () => {
     setIsLoading(true)
@@ -25,15 +28,19 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
     setResults(null)
 
     try {
-      let url = `${API_BASE_URL}/profiles/query?`
+      let url = `${API_BASE_URL}/profiles`
       const params = new URLSearchParams()
 
+      // Add query parameters based on selection
       if (queryType === 'name' && nameQuery) {
-        params.append('name', nameQuery)
+        url += '/search'
+        params.append('q', nameQuery)
       } else if (queryType === 'tags' && tagsQuery) {
+        url += '/query'
         const tags = tagsQuery.split(',').map(t => t.trim()).filter(t => t)
         tags.forEach(tag => params.append('tags', tag))
       } else if (queryType === 'both' && (nameQuery || tagsQuery)) {
+        url += '/query'
         if (nameQuery) params.append('name', nameQuery)
         if (tagsQuery) {
           const tags = tagsQuery.split(',').map(t => t.trim()).filter(t => t)
@@ -41,30 +48,62 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
         }
       }
 
+      // Add business ID filter if provided
       if (businessId) params.append('businessId', businessId)
 
-      const response = await fetch(url + params.toString())
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+      // Add pagination parameters
+      params.append('limit', '50')
+
+      const finalUrl = params.toString() ? `${url}?${params.toString()}` : url
+      
+      // Prepare headers
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+
+      // Add API key if provided
+      if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`
+      }
+
+      const response = await fetch(finalUrl, {
+        method: 'GET',
+        headers
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.text()
+        throw new Error(`API Error (${response.status}): ${errorData}`)
+      }
       
       const data = await response.json()
       setResults(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('An unexpected error occurred while fetching data')
+      }
     } finally {
       setIsLoading(false)
     }
   }
 
   const getEndpointUrl = () => {
-    let url = `${API_BASE_URL}/profiles/query?`
+    let url = `${API_BASE_URL}/profiles`
     const params = new URLSearchParams()
 
+    // Determine endpoint based on query type
     if (queryType === 'name' && nameQuery) {
-      params.append('name', nameQuery)
+      url += '/search'
+      params.append('q', nameQuery)
     } else if (queryType === 'tags' && tagsQuery) {
+      url += '/query'
       const tags = tagsQuery.split(',').map(t => t.trim()).filter(t => t)
       tags.forEach(tag => params.append('tags', tag))
     } else if (queryType === 'both' && (nameQuery || tagsQuery)) {
+      url += '/query'
       if (nameQuery) params.append('name', nameQuery)
       if (tagsQuery) {
         const tags = tagsQuery.split(',').map(t => t.trim()).filter(t => t)
@@ -72,9 +111,13 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
       }
     }
 
+    // Add business ID filter if provided
     if (businessId) params.append('businessId', businessId)
+    
+    // Add pagination
+    params.append('limit', '50')
 
-    return url + params.toString()
+    return params.toString() ? `${url}?${params.toString()}` : url
   }
 
   const copyToClipboard = (text: string, endpoint: string) => {
@@ -135,6 +178,17 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
         />
       </div>
 
+      <div className={styles.inputGroup}>
+        <label>API Key (optional):</label>
+        <input
+          type="password"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          placeholder="Enter your API key for authenticated requests"
+          className={styles.input}
+        />
+      </div>
+
       <div className={styles.endpointPreview}>
         <label>Endpoint:</label>
         <div className={styles.endpointBox}>
@@ -190,46 +244,215 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
     )
   }
 
+  const handleTestRequest = async () => {
+    setIsLoading(true)
+    setError(null)
+    setResults(null)
+
+    try {
+      let headers: Record<string, string> = {}
+      
+      // Parse custom headers
+      if (customHeaders) {
+        try {
+          headers = JSON.parse(customHeaders)
+        } catch (e) {
+          throw new Error('Invalid JSON in custom headers')
+        }
+      }
+
+      const response = await fetch(`${API_BASE_URL}${testEndpoint}`, {
+        method: 'GET',
+        headers
+      })
+
+      const data = await response.json()
+      
+      setResults({
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries()),
+        data
+      })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const renderApiTester = () => (
+    <div className={styles.apiTester}>
+      <div className={styles.testSection}>
+        <h4>Custom API Request</h4>
+        
+        <div className={styles.inputGroup}>
+          <label>Endpoint:</label>
+          <div className={styles.endpointInput}>
+            <span className={styles.baseUrl}>{API_BASE_URL}</span>
+            <input
+              type="text"
+              value={testEndpoint}
+              onChange={(e) => setTestEndpoint(e.target.value)}
+              placeholder="/profiles"
+              className={styles.input}
+            />
+          </div>
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label>Headers (JSON):</label>
+          <textarea
+            value={customHeaders}
+            onChange={(e) => setCustomHeaders(e.target.value)}
+            className={styles.textarea}
+            rows={4}
+            placeholder='{"Authorization": "Bearer your-api-key"}'
+          />
+        </div>
+
+        <button
+          className={styles.testButton}
+          onClick={handleTestRequest}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Testing...' : 'Send Request'}
+        </button>
+      </div>
+
+      <div className={styles.quickTests}>
+        <h4>Quick Tests</h4>
+        <div className={styles.quickTestButtons}>
+          <button
+            className={styles.quickTestButton}
+            onClick={() => {
+              setTestEndpoint('/profiles')
+              handleTestRequest()
+            }}
+            disabled={isLoading}
+          >
+            List Profiles
+          </button>
+          <button
+            className={styles.quickTestButton}
+            onClick={() => {
+              setTestEndpoint('/profiles/search?q=developer')
+              handleTestRequest()
+            }}
+            disabled={isLoading}
+          >
+            Search "developer"
+          </button>
+          <button
+            className={styles.quickTestButton}
+            onClick={() => {
+              setTestEndpoint('/profiles/query?tags=frontend')
+              handleTestRequest()
+            }}
+            disabled={isLoading}
+          >
+            Query by tags
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+
   const renderDocumentation = () => (
     <div className={styles.apiDocs}>
       <h3>API Endpoints</h3>
+      <p className={styles.apiBaseUrl}>Base URL: <code>{API_BASE_URL}</code></p>
       
       <div className={styles.docSection}>
+        <h4>List All Profiles</h4>
+        <code className={styles.endpointCode}>GET /profiles</code>
+        <p>Retrieve all profiles with optional pagination.</p>
+        
+        <h5>Query Parameters:</h5>
+        <ul className={styles.paramsList}>
+          <li><strong>limit</strong> (number): Maximum number of results (default: 50, max: 100)</li>
+          <li><strong>lastKey</strong> (string): Pagination token for next page</li>
+          <li><strong>businessId</strong> (string): Filter by specific business ID</li>
+        </ul>
+
+        <h5>Example:</h5>
+        <code className={styles.exampleCode}>
+          GET {API_BASE_URL}/profiles?limit=20&businessId=T096L62N0MB
+        </code>
+      </div>
+
+      <div className={styles.docSection}>
         <h4>Query Profiles</h4>
-        <code className={styles.endpointCode}>GET /api/profiles/query</code>
-        <p>Query profiles by name and/or tags with pagination support.</p>
+        <code className={styles.endpointCode}>GET /profiles/query</code>
+        <p>Query profiles by name and/or tags with advanced filtering.</p>
         
         <h5>Query Parameters:</h5>
         <ul className={styles.paramsList}>
           <li><strong>name</strong> (string): Search by name, email, or role</li>
           <li><strong>tags</strong> (array): Filter by tags (can be repeated)</li>
           <li><strong>businessId</strong> (string): Filter by business ID</li>
-          <li><strong>limit</strong> (number): Results per page (default: 100)</li>
+          <li><strong>userType</strong> (string): Filter by user type (internal/external)</li>
+          <li><strong>limit</strong> (number): Results per page (default: 50)</li>
           <li><strong>lastKey</strong> (string): Pagination token</li>
         </ul>
 
         <h5>Example:</h5>
         <code className={styles.exampleCode}>
-          GET /api/profiles/query?name=john&tags=developer&tags=senior
+          GET {API_BASE_URL}/profiles/query?name=john&tags=developer&tags=senior&limit=25
         </code>
       </div>
 
       <div className={styles.docSection}>
-        <h4>List All Profiles</h4>
-        <code className={styles.endpointCode}>GET /api/profiles</code>
-        <p>List all profiles with optional filtering.</p>
+        <h4>Search Profiles</h4>
+        <code className={styles.endpointCode}>GET /profiles/search</code>
+        <p>Full-text search across all profile fields (name, email, role, description).</p>
+        
+        <h5>Query Parameters:</h5>
+        <ul className={styles.paramsList}>
+          <li><strong>q</strong> (string): Search query</li>
+          <li><strong>businessId</strong> (string): Filter by business ID</li>
+          <li><strong>limit</strong> (number): Results per page (default: 50)</li>
+        </ul>
+
+        <h5>Example:</h5>
+        <code className={styles.exampleCode}>
+          GET {API_BASE_URL}/profiles/search?q=frontend developer
+        </code>
       </div>
 
       <div className={styles.docSection}>
         <h4>Get Single Profile</h4>
-        <code className={styles.endpointCode}>GET /api/profiles/:businessId/:userId</code>
+        <code className={styles.endpointCode}>GET /profiles/:businessId/:userId</code>
         <p>Get a specific profile by business ID and user ID.</p>
+
+        <h5>Example:</h5>
+        <code className={styles.exampleCode}>
+          GET {API_BASE_URL}/profiles/T096L62N0MB/U123456789
+        </code>
       </div>
 
       <div className={styles.docSection}>
-        <h4>Search Profiles</h4>
-        <code className={styles.endpointCode}>GET /api/profiles/search?q=query</code>
-        <p>Full-text search across all profile fields.</p>
+        <h4>Authentication</h4>
+        <p>All API requests require proper authentication headers. Include your API key or bearer token in the Authorization header:</p>
+        <code className={styles.exampleCode}>
+          Authorization: Bearer your-api-token
+        </code>
+      </div>
+
+      <div className={styles.docSection}>
+        <h4>Response Format</h4>
+        <p>All successful responses return JSON with the following structure:</p>
+        <pre className={styles.jsonExample}>
+{`{
+  "success": true,
+  "data": [...], // Array of profiles or single profile
+  "count": 25,   // Number of results
+  "pagination": {
+    "hasMore": true,
+    "lastKey": "eyJ..."
+  }
+}`}
+        </pre>
       </div>
     </div>
   )
@@ -250,6 +473,13 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
             Query Builder
           </button>
           <button
+            className={`${styles.apiTab} ${activeTab === 'test' ? styles.active : ''}`}
+            onClick={() => setActiveTab('test')}
+          >
+            <Tag size={16} />
+            API Tester
+          </button>
+          <button
             className={`${styles.apiTab} ${activeTab === 'docs' ? styles.active : ''}`}
             onClick={() => setActiveTab('docs')}
           >
@@ -263,6 +493,11 @@ export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
         {activeTab === 'query' ? (
           <>
             {renderQueryBuilder()}
+            {renderResults()}
+          </>
+        ) : activeTab === 'test' ? (
+          <>
+            {renderApiTester()}
             {renderResults()}
           </>
         ) : (
