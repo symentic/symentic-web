@@ -7,6 +7,7 @@ import { ProfileDetail } from '../../components/dashboard/ProfileDetail'
 import { CreateProfileModal } from '../../components/dashboard/CreateProfileModal'
 import { ProfileSkeleton } from '../../components/dashboard/ProfileSkeleton'
 import { APIIntegration } from '../../components/dashboard/APIIntegration'
+import { SourceSearch } from '../../components/dashboard/SourceSearch'
 import { ExistingEngramProfileService } from '../../services/existingEngramProfileService'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts'
@@ -24,7 +25,7 @@ const Dashboard: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [showCreateModal, setShowCreateModal] = useState(false)
-  const [activeView, setActiveView] = useState<'profiles' | 'api'>('profiles')
+  const [activeView, setActiveView] = useState<'profiles' | 'api' | 'source'>('profiles')
   
   // Default business ID for creating new profiles
   const businessId = 'T096L62N0MB'
@@ -192,8 +193,10 @@ const Dashboard: React.FC = () => {
               )}
             </div>
           </>
-        ) : (
+        ) : activeView === 'api' ? (
           <APIIntegration />
+        ) : (
+          <SourceSearch />
         )}
       </div>
       

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Users, Filter, Home, Shield, Code } from 'lucide-react'
+import { Users, Filter, Home, Shield, Code, Sparkles } from 'lucide-react'
 import symenticLogo from '../../assets/symentic.png'
 import styles from '../../styles/dashboard/Dashboard.module.css'
 
@@ -8,8 +8,8 @@ interface SidebarProps {
   onFilterChange: (filter: string) => void
   engramCount: number
   totalCount: number
-  activeView: 'profiles' | 'api'
-  onViewChange: (view: 'profiles' | 'api') => void
+  activeView: 'profiles' | 'api' | 'source'
+  onViewChange: (view: 'profiles' | 'api' | 'source') => void
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -52,6 +52,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <Code size={18} />
             <span>API Integration</span>
+          </li>
+          <li 
+            className={`${styles.navItem} ${activeView === 'source' ? styles.active : ''}`}
+            onClick={() => onViewChange('source')}
+          >
+            <Sparkles size={18} />
+            <span>Source</span>
           </li>
         </ul>
       </div>
