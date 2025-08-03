@@ -1002,9 +1002,11 @@ html {
 }
 
 .navItem.active {
-  background: var(--glass-darker);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--accent-primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(calc(var(--glass-blur) * 0.8));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.8));
 }
 
 .navItem.active::before {
@@ -1075,9 +1077,11 @@ html {
 }
 
 .apiTab.active {
-  background: var(--glass-darker);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--accent-primary);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(calc(var(--glass-blur) * 0.8));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.8));
 }
 
 .apiContent {
