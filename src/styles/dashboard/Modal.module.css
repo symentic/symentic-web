@@ -9,7 +9,7 @@
 .overlay {
   position: fixed;
   top: 80px;
-  left: 0;
+  left: 240px;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.3);
@@ -790,6 +790,7 @@
   .overlay {
     padding: 0;
     top: 60px;
+    left: 0;
   }
   
   .modal {
