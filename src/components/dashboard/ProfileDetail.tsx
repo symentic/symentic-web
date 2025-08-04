@@ -1,5 +1,5 @@
 import React from 'react'
-import { X, Mail, Tag, User, Clock, Shield, Globe, CheckCircle, Activity, Calendar, Hash, Sparkles } from 'lucide-react'
+import { X, Mail, Tag, User, Shield, CheckCircle, Activity, Hash, Sparkles } from 'lucide-react'
 import styles from '../../styles/dashboard/Modal.module.css'
 
 interface ProfileDetailProps {
@@ -28,7 +28,6 @@ export const ProfileDetail: React.FC<ProfileDetailProps> = ({
   const slackProfile = engram.slackProfile
   const displayName = slackProfile?.displayName
   const realName = slackProfile?.realName
-  const profilePictureUrl = slackProfile?.profilePictureUrl
   const isAdmin = slackProfile?.isAdmin
   const isOwner = slackProfile?.isOwner
   const timezone = slackProfile?.timezone
@@ -188,7 +187,7 @@ export const ProfileDetail: React.FC<ProfileDetailProps> = ({
                 Enrichments
               </h3>
               <div className={styles.enrichmentsList}>
-                {enrichments.map((enrichment, index) => (
+                {enrichments.map((enrichment: any, index: number) => (
                   <div key={index} className={styles.enrichmentItem}>
                     <div className={styles.enrichmentHeader}>
                       <span className={styles.enrichmentAgent}>{enrichment.agent}</span>
@@ -237,7 +236,7 @@ export const ProfileDetail: React.FC<ProfileDetailProps> = ({
                 Tags
               </h3>
               <div className={styles.detailTags}>
-                {tags.map((tag, index) => (
+                {tags.map((tag: string, index: number) => (
                   <span key={index} className={styles.detailTag}>
                     {tag}
                   </span>

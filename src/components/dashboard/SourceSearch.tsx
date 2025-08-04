@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Search, Loader2, Sparkles } from 'lucide-react'
+import { Search, Sparkles } from 'lucide-react'
 import { ProfileGrid } from './ProfileGrid'
 import { ProfileDetail } from './ProfileDetail'
 import { ExistingEngramProfileService } from '../../services/existingEngramProfileService'

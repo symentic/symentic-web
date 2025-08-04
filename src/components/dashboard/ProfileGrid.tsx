@@ -11,7 +11,6 @@ interface ProfileGridProps {
 
 export const ProfileGrid: React.FC<ProfileGridProps> = ({
   engrams,
-  selectedEngram,
   onSelectEngram
 }) => {
   if (engrams.length === 0) {

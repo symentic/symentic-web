@@ -327,7 +327,6 @@ export class ExistingEngramProfileService {
   // Search profiles by name, email, or role
   static async searchProfiles(businessId: string, searchQuery: string) {
     try {
-      const docClient = await getDocClient();
       const query = searchQuery.toLowerCase();
       
       // First, get all profiles for the business

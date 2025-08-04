@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ExistingExistingEngramProfileService, CreateEngramProfileInput } from '../../services/existingExistingEngramProfileService'
+import { ExistingEngramProfileService, CreateEngramProfileInput } from '../../services/existingEngramProfileService'
 import { RefreshCw, UserPlus, AlertCircle, Info, X } from 'lucide-react'
 import styles from '../../styles/dashboard/Modal.module.css'
 
@@ -96,7 +96,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
     if (e.key === 'Enter' && e.currentTarget.value.trim()) {
       e.preventDefault()
       const newTag = e.currentTarget.value.trim()
-      setFormData(prev => ({
+      setFormData((prev: Partial<CreateEngramProfileInput>) => ({
         ...prev,
         tags: [...(prev.tags || []), newTag]
       }))
@@ -105,9 +105,9 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
   }
 
   const removeTag = (index: number) => {
-    setFormData(prev => ({
+    setFormData((prev: Partial<CreateEngramProfileInput>) => ({
       ...prev,
-      tags: prev.tags?.filter((_, i) => i !== index) || []
+      tags: prev.tags?.filter((_: string, i: number) => i !== index) || []
     }))
   }
 
@@ -141,7 +141,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   User ID
                   <button
                     type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, userId: generateUserId() }))}
+                    onClick={() => setFormData((prev: Partial<CreateEngramProfileInput>) => ({ ...prev, userId: generateUserId() }))}
                     className={styles.generateButton}
                     title="Generate new ID"
                   >
@@ -153,7 +153,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   type="text"
                   id="userId"
                   value={formData.userId || ''}
-                  onChange={e => setFormData(prev => ({ ...prev, userId: e.target.value }))}
+                  onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({ ...prev, userId: e.target.value }))}
                   placeholder="e.g., U096L62NHB7"
                   required
                   autoComplete="off"
@@ -170,7 +170,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   type="text"
                   id="name"
                   value={formData.name || ''}
-                  onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({ ...prev, name: e.target.value }))}
                   placeholder="John Doe"
                   required
                   autoComplete="off"
@@ -188,7 +188,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                 type="email"
                 id="email"
                 value={formData.email || ''}
-                onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({ ...prev, email: e.target.value }))}
                 placeholder="john.doe@example.com"
                 required
                 autoComplete="off"
@@ -206,7 +206,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   type="text"
                   id="role"
                   value={formData.role || ''}
-                  onChange={e => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                  onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({ ...prev, role: e.target.value }))}
                   placeholder="e.g., Developer"
                   autoComplete="off"
                   autoCorrect="off"
@@ -224,7 +224,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                 className={styles.textarea}
                 id="description"
                 value={formData.description || ''}
-                onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({ ...prev, description: e.target.value }))}
                 rows={3}
                 placeholder="Brief description of the user's role and responsibilities"
                 autoComplete="off"
@@ -240,7 +240,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   className={styles.select}
                   id="userType"
                   value={formData.userType}
-                  onChange={e => setFormData(prev => ({ ...prev, userType: e.target.value as 'internal' | 'external' }))}
+                  onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({ ...prev, userType: e.target.value as 'internal' | 'external' }))}
                 >
                   <option value="internal">Internal</option>
                   <option value="external">External</option>
@@ -259,7 +259,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                   type="text"
                   id="source"
                   value={formData.source || ''}
-                  onChange={e => setFormData(prev => ({ ...prev, source: e.target.value }))}
+                  onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({ ...prev, source: e.target.value }))}
                   placeholder="e.g., slack, manual"
                   autoComplete="off"
                   autoCorrect="off"
@@ -288,7 +288,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                 </div>
                 {formData.tags && formData.tags.length > 0 && (
                   <div className={styles.tagList}>
-                    {formData.tags.map((tag, index) => (
+                    {formData.tags.map((tag: string, index: number) => (
                       <span key={index} className={styles.tag}>
                         {tag}
                         <button
@@ -316,7 +316,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                     type="text"
                     id="slackUserId"
                     value={formData.slackProfile?.slackUserId || ''}
-                    onChange={e => setFormData(prev => ({
+                    onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({
                       ...prev,
                       slackProfile: {
                         ...prev.slackProfile,
@@ -338,7 +338,7 @@ export const CreateProfileModal: React.FC<CreateProfileModalProps> = ({
                     type="text"
                     id="displayName"
                     value={formData.slackProfile?.displayName || ''}
-                    onChange={e => setFormData(prev => ({
+                    onChange={e => setFormData((prev: Partial<CreateEngramProfileInput>) => ({
                       ...prev,
                       slackProfile: {
                         ...prev.slackProfile,
