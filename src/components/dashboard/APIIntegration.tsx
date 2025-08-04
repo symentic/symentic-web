@@ -6,7 +6,7 @@ interface APIIntegrationProps {
   onClose?: () => void
 }
 
-export const APIIntegration: React.FC<APIIntegrationProps> = ({ onClose }) => {
+export const APIIntegration: React.FC<APIIntegrationProps> = () => {
   const [activeTab, setActiveTab] = useState('query')
   const [queryType, setQueryType] = useState('name')
   const [nameQuery, setNameQuery] = useState('')

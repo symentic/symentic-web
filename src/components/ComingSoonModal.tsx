@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Clock, Zap, Code } from 'lucide-react'
+import { Clock, Zap, Code } from 'lucide-react'
 import '../styles/ComingSoonModal.css'
 
 interface ComingSoonModalProps {
