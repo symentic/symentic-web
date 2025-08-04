@@ -311,21 +311,21 @@ const Hero: React.FC = () => {
             >
               <div className="hero-badge">
                 <Zap className="hero-badge-icon" />
-                <span className="hero-badge-text">Autonomous AI Infrastructure</span>
+                <span className="hero-badge-text">Agents that know your enterprise</span>
               </div>
               
               <h1 className="hero-heading">
-                The
+                Enterprise
                 <span className="hero-heading-gradient">
-                  Symbiotic
+                  Symbiotic 
                 </span>
-                Agentic AI
+                Agents
               </h1>
               
               <p className="hero-description">
-                Observe conversations. Act with context. Scale with intent.
-                Your infrastructure for intelligent, evolving AI agents.
+                Agents that are collegues with your clients and employees. Automate with social context and intent. 
               </p>
+              
             </motion.div>
 
             <motion.div

@@ -7,7 +7,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="app-content">
       <Hero />
-      <div id="how-it-works" className="section-bg-primary section-spacing">
+      <div id="how-it-works" className="section-spacing">
         <HowItWorks />
       </div>
       <div id="docs" className="section-spacing">
