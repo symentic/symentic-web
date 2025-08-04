@@ -60,16 +60,6 @@ const Header: React.FC = () => {
               How it Works
             </a>
             <Link to="/about-us" className="header-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
-            <a 
-              href="#developer-api" 
-              onClick={(e) => {
-                e.preventDefault()
-                handleSectionClick('developer-api')
-              }}
-              className="header-nav-link"
-            >
-              Developer API
-            </a>
             <button 
               onClick={handleComingSoon}
               className="header-nav-link header-nav-button"

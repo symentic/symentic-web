@@ -23,37 +23,41 @@
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
-  overflow-y: auto;
+  overflow: visible;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.5),
     0 0 60px rgba(99, 102, 241, 0.1);
 }
 
-.coming-soon-close {
+.modal-close-button {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: #94a3b8;
-  width: 40px;
-  height: 40px;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  z-index: 999;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.coming-soon-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  transform: scale(1.05);
+.modal-close-button:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .coming-soon-content {
-  padding: 50px 40px 40px;
+  padding: 70px 40px 40px;
   text-align: center;
   color: #ffffff;
 }

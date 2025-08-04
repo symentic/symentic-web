@@ -57,12 +57,13 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({ isOpen, onClose }) =>
             className="coming-soon-modal"
             onClick={(e) => e.stopPropagation()}
           >
-            <button 
+            <div 
               onClick={onClose}
-              className="coming-soon-close"
+              className="modal-close-button"
+              title="Close"
             >
-              <X size={20} />
-            </button>
+              ×
+            </div>
 
             <div className="coming-soon-content">
               <motion.div 
