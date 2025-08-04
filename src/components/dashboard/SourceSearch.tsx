@@ -156,7 +156,7 @@ export const SourceSearch: React.FC = () => {
             Source profiles
           </h1>
           <p className={styles.subtitle}>
-            Find clients or employees with one prompt
+            Deploy agents to clients or employees with one prompt
           </p>
         </div>
       </div>
@@ -168,7 +168,7 @@ export const SourceSearch: React.FC = () => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder='Try "Find me engineers who work with ML" or "People interested in blockchain"'
+            placeholder='Try "Find me engineers who work with ML" or "Users who report payment bugs"'
             className={styles.searchInput}
             disabled={isSearching}
           />
