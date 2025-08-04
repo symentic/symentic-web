@@ -18,8 +18,8 @@ const HowItWorks: React.FC = () => {
     {
       step: '01',
       icon: MessageSquare,
-      title: 'Bots join your platforms',
-      description: 'Deploy autonomous agents directly into Slack, Discord, and soon Notion, Gmail, and more.',
+      title: 'Human memory layer',
+      description: 'Capture employee and client engram context.',
       details: ['Seamless integration', 'Zero configuration', 'Instant deployment']
     },
     {
@@ -33,7 +33,7 @@ const HowItWorks: React.FC = () => {
       step: '03',
       icon: Zap,
       title: 'They spawn helpers or expose APIs',
-      description: 'Based on needs, agents create specialized child bots or expose developer APIs for custom automation.',
+      description: 'Agents that can integrate into any enterprise tooling.',
       details: ['Dynamic spawning', 'API endpoints', 'Custom workflows']
     }
   ]
@@ -88,7 +88,7 @@ const HowItWorks: React.FC = () => {
           </h2>
           <div className="how-it-works-description">
             <p>
-              Three simple steps to deploy intelligent, context-aware AI agents that grow with your needs
+              Three simple steps to deploy intelligent, social context-aware AI agents that grow with your needs
             </p>
           </div>
         </motion.div>

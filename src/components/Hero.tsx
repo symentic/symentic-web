@@ -323,7 +323,7 @@ const Hero: React.FC = () => {
               </h1>
               
               <p className="hero-description">
-                Agents that are collegues with your clients and employees. Automate with social context and intent. 
+              Agents who know everyone in your enterprise. Automate with social context and intent. 
               </p>
               
             </motion.div>
@@ -358,15 +358,15 @@ const Hero: React.FC = () => {
             >
               <div className="hero-status-item">
                 <div className="hero-status-dot hero-status-dot-green"></div>
-                <span>Discord Integration</span>
+                <span>Persistent Human Context</span>
               </div>
               <div className="hero-status-item">
                 <div className="hero-status-dot hero-status-dot-green"></div>
-                <span>Slack Integration</span>
+                <span>Agent Integration</span>
               </div>
               <div className="hero-status-item">
-                <div className="hero-status-dot hero-status-dot-yellow"></div>
-                <span>API Access</span>
+                <div className="hero-status-dot hero-status-dot-green"></div>
+                <span>Enterprise Tooling</span>
               </div>
             </motion.div>
           </motion.div>

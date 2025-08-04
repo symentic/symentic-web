@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Linkedin, Users, Brain, Code } from 'lucide-react'
+import { Linkedin } from 'lucide-react'
 import '../styles/AboutUs.css'
 import leoHeadshot from '../assets/leoheadshot.jpeg'
 import willHeadshot from '../assets/willheadshot.jpeg'
@@ -10,8 +10,6 @@ interface Founder {
   name: string
   role: string
   linkedin: string
-  bio: string
-  expertise: string[]
   profileImage?: string
 }
 
@@ -21,44 +19,20 @@ const AboutUs: React.FC = () => {
       name: "Leo Gao",
       role: "Co-Founder & CEO",
       linkedin: "https://www.linkedin.com/in/leogao25/",
-      bio: "Deep expertise in machine learning, distributed systems, and AI infrastructure at scale.",
-      expertise: ["Product Vision", "System Architecture", "AI Research"],
       profileImage: leoHeadshot
     },
     {
       name: "William Zhang",
       role: "Co-Founder & CTO",
       linkedin: "https://www.linkedin.com/in/williamzhang04/",
-      bio: "Passionate about building the future of autonomous AI systems and symbiotic agent networks.",
-      expertise: ["AI Strategy", "Product Vision", "Team Leadership"],
       profileImage: willHeadshot
     },
     {
       name: "Richard Huang",
       role: "Co-Founder & CPO",
       linkedin: "https://www.linkedin.com/in/richxhuang/",
-      bio: "Focused on creating intuitive user experiences and driving product innovation in AI-powered platforms.",
-      expertise: ["Product Strategy", "User Experience", "Product Management"],
       profileImage: richardHeadshot
     },
-  ]
-
-  const values = [
-    {
-      icon: Brain,
-      title: "Intelligence First",
-      description: "We believe AI should augment human capabilities, not replace them."
-    },
-    {
-      icon: Users,
-      title: "Symbiotic Design",
-      description: "Building systems where AI agents work together seamlessly across platforms."
-    },
-    {
-      icon: Code,
-      title: "Developer Focused",
-      description: "Creating tools that empower developers to build the next generation of AI applications."
-    }
   ]
 
   return (
@@ -80,59 +54,8 @@ const AboutUs: React.FC = () => {
             About <span className="about-us-title-gradient">Symentic</span>
           </h2>
           <p className="about-us-subtitle">
-            We're building the infrastructure for autonomous AI that works symbiotically across platforms, 
-            enabling intelligent agents to collaborate and learn from each other.
+            Establishing the standard for human context layers in enterprises. Allowing agents to work symbiotically with colleagues and clients. Our agents act with intent. 
           </p>
-        </motion.div>
-
-        {/* Mission Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="about-us-mission"
-        >
-          <h3 className="about-us-section-title">Our Mission</h3>
-          <p className="about-us-mission-text">
-            To democratize access to intelligent AI systems that can autonomously collaborate, 
-            learn, and adapt across different platforms and environments. We envision a future 
-            where AI agents work together seamlessly, creating a symbiotic ecosystem that 
-            amplifies human potential.
-          </p>
-        </motion.div>
-
-        {/* Values Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="about-us-values"
-        >
-          <h3 className="about-us-section-title">Our Values</h3>
-          <div className="about-us-values-grid">
-            {values.map((value, index) => {
-              const Icon = value.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 * index }}
-                  viewport={{ once: true }}
-                  className="about-us-value"
-                  whileHover={{ y: -5 }}
-                >
-                  <div className="about-us-value-icon-container">
-                    <Icon className="about-us-value-icon" />
-                  </div>
-                  <h4 className="about-us-value-title">{value.title}</h4>
-                  <p className="about-us-value-description">{value.description}</p>
-                </motion.div>
-              )
-            })}
-          </div>
         </motion.div>
 
         {/* Founders Section */}
@@ -143,7 +66,7 @@ const AboutUs: React.FC = () => {
           viewport={{ once: true }}
           className="about-us-founders"
         >
-          <h3 className="about-us-section-title">Meet the Founders</h3>
+          <h3 className="about-us-section-title">The Team</h3>
           <div className="about-us-founders-grid">
             {founders.map((founder, index) => (
               <motion.div
@@ -168,16 +91,6 @@ const AboutUs: React.FC = () => {
                   <div className="about-us-founder-header">
                     <h4 className="about-us-founder-name">{founder.name}</h4>
                     <span className="about-us-founder-role">{founder.role}</span>
-                  </div>
-                  
-                  <p className="about-us-founder-bio">{founder.bio}</p>
-                  
-                  <div className="about-us-founder-expertise">
-                    {founder.expertise.map((skill, skillIndex) => (
-                      <span key={skillIndex} className="about-us-expertise-tag">
-                        {skill}
-                      </span>
-                    ))}
                   </div>
                   
                   <motion.a
@@ -207,11 +120,7 @@ const AboutUs: React.FC = () => {
         >
           <div className="about-us-contact-content">
             <h3 className="about-us-contact-title">Join Our Journey</h3>
-            <p className="about-us-contact-text">
-              We're always looking for talented individuals who share our vision. 
-              If you're passionate about AI, autonomous systems, and building the future, 
-              we'd love to hear from you.
-            </p>
+
             <div className="about-us-contact-email-section">
               <span className="about-us-contact-label">Get in touch at </span>
               <motion.a
