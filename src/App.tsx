@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import AboutUsPage from './pages/AboutUsPage'
+import CommunityPage from './pages/CommunityPage'
+import BlogPostPage from './pages/BlogPostPage'
 import Dashboard from './pages/dashboard/Dashboard'
 import { ThemeProvider } from './contexts/ThemeContext'
 import './App.css'
@@ -19,6 +21,8 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/about-us" element={<AboutUsPage />} />
+                <Route path="/community" element={<CommunityPage />} />
+                <Route path="/blog/:id" element={<BlogPostPage />} />
               </Routes>
             </div>
           } />
