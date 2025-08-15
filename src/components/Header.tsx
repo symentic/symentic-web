@@ -60,6 +60,7 @@ const Header: React.FC = () => {
               How it Works
             </a>
             <Link to="/about-us" className="header-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
+            <Link to="/community" className="header-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Community</Link>
             <button 
               onClick={handleComingSoon}
               className="header-nav-link header-nav-button"
