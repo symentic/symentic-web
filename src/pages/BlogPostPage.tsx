@@ -151,9 +151,11 @@ const BlogPostPage: React.FC = () => {
       </div>
 
       <article className="blog-post-container">
-        <div className="blog-post-hero">
-          <img src={post.image} alt={post.title} className="blog-post-image" />
-        </div>
+        {post.image && (
+          <div className="blog-post-hero">
+            <img src={post.image} alt={post.title} className="blog-post-image" />
+          </div>
+        )}
 
         <div className="blog-post-content-wrapper">
           <header className="blog-post-meta-header">
