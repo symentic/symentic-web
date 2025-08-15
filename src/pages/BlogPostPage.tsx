@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Clock, User, Tag, Share2, BookOpen } from 'lucide-react'
 import { getBlogPost, getRelatedPosts, BlogPost } from '../data/blogPosts'
 import '../styles/BlogPostPage.css'
 
 const BlogPostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
   const [post, setPost] = useState<BlogPost | undefined>()
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
   const [copied, setCopied] = useState(false)
@@ -39,7 +38,6 @@ const BlogPostPage: React.FC = () => {
   const formatContent = (content: string) => {
     const lines = content.trim().split('\n')
     const elements: JSX.Element[] = []
-    let inList = false
     let listItems: string[] = []
 
     const closeList = () => {
@@ -52,7 +50,6 @@ const BlogPostPage: React.FC = () => {
           </ul>
         )
         listItems = []
-        inList = false
       }
     }
 
@@ -89,11 +86,9 @@ const BlogPostPage: React.FC = () => {
           </p>
         )
       } else if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('• ')) {
-        inList = true
         listItems.push(trimmedLine.substring(2))
       } else if (trimmedLine.match(/^\d+\.\s/)) {
         closeList()
-        const itemText = trimmedLine.replace(/^\d+\.\s/, '')
         elements.push(
           <p key={index} className="blog-content-numbered">
             {trimmedLine}
